@@ -1,0 +1,18 @@
+<!--component/end-component/end-component.wxml-->
+<view class='end-content' style='--Height--:{{height-844}}+"rpx"'>
+  <view class='end-result' style='height:{{height-212-width}}rpx'>
+    <image src='../../images/top.png' class='end-result-top'></image>
+    <view class='end-result-title'>获奖名单</view>
+    <scroll-view scroll-y class='end-result-scroll'>
+      <view class='result-line' wx:for="{{prize}}">
+        <view wx:if="{{index==0}}" class='result-line_1'><view class='rank rank_1'></view></view>
+        <view wx:if="{{index==1}}" class='result-line_1'><view class='rank rank_2'></view></view>
+        <view wx:if="{{index==2}}" class='result-line_1'><view class='rank rank_3'></view></view>
+        <view wx:if="{{index>2}}" class="result-line_1"><view class="result-icon">{{index+1}}</view></view>
+        <view class="result-line_2">{{item.nickname}}</view>
+        <view class="result-line_3" wx:if="{{index>=0&&index<=9}}">G550A一台</view>
+        <view class="result-line_3" wx:if="{{index>9}}">200元优惠券</view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

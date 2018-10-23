@@ -1,0 +1,761 @@
+/* component/self-component/self-component.wxss */
+@import "../../public/image.wxss";
+.self-content{
+  margin-top: 958rpx;
+  padding-bottom: 88rpx;
+  width: 100%;
+  background-color: #fc4056;
+  overflow: hidden;
+}
+.nowin{
+  box-sizing: border-box;
+  position: relative;
+  margin: 0 auto;
+  margin-top: 38rpx;
+  padding-top: 200rpx;
+  width: 673rpx;
+  height: 395rpx;
+  background-color: white;
+  border-radius: 10rpx;
+}
+.avtar{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: -36rpx;
+  width: 110rpx;
+  height: 110rpx;
+  border-radius: 50%;
+}
+.infoName{
+  position: absolute;
+  top: 80rpx;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  font-size: 27rpx;
+  color: #000000
+}
+/* 进度条样式 */
+.percent{
+  position: relative;
+  margin: 0 auto;
+  width: 560rpx;
+  height: 30rpx;
+}
+.percent0{
+  display: block;
+  width: 560rpx;
+  height: 30rpx;
+}
+.percent_tip{
+  position: absolute;
+  top: -68rpx;
+  width: 124rpx;
+  height: 68rpx;
+  z-index: 1;
+}
+.percent_tip_text{
+  position: absolute;
+  top: 0rpx;
+  width: 100%;
+  height: 50rpx;
+  line-height: 50rpx;
+  text-align: center;
+  color:white;
+  font-size: 32rpx;
+}
+.percentcurrent{
+  position: absolute;
+  left: 0rpx;
+  top: 0rpx;
+  height: 30rpx;
+  border-radius: 20rpx;
+  z-index:1;
+}
+
+
+.percentleft{
+  display: inline-block;
+  box-sizing: border-box;
+  padding-left: 48rpx;
+  width: 50%;
+  height: 36rpx;
+  line-height: 36rpx;
+  color: #2e2e2e;
+  font-size: 24rpx;
+}
+
+.percentright{
+  text-align: right;
+  box-sizing: border-box;
+  padding-right: 16rpx;
+  display: inline-block;
+  width: 50%;
+  color: #2e2e2e;
+  font-size: 24rpx;
+}
+.selfinfo{
+  margin-top: 29rpx;
+  width: 100%;
+}
+
+.info{
+  width: 100%;
+  text-align: center;
+  line-height: 37rpx;
+  color: rgba(0,0,0,0.8);
+  font-size: 27rpx;
+}
+
+.infoPirce{
+  display: inline;
+  color: #ff0000;
+}
+
+
+.selfinfos{
+  margin-top: 45rpx;
+  width: 100%;
+}
+.wininfo{
+  width: 100%;
+  height:50rpx;
+  line-height: 50rpx;
+  text-align: center;
+  font-size: 34rpx;
+  color: white;
+}
+
+/* 获奖界面样式 */
+.win{
+  width: 100%;
+}
+.win-title{
+  margin-bottom: 20rpx;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 40rpx;
+  font-weight: 600;
+}
+.Winicon{
+  display: block;
+  margin: 0 auto;
+  width: 558rpx;
+  height: 371rpx;
+}
+.Winicons{
+  display: block;
+  margin: 0 auto;
+  width: 543rpx;
+  height: 209rpx;
+}
+.win-content{
+  margin-top: 20rpx;
+  width: 100%;
+  color: white;
+  text-align: center;
+  font-size: 27rpx;
+}
+
+/* 按钮样式 */
+.btns{
+  margin: 0 auto;
+  margin-top: 55rpx;
+  width: 673rpx;
+}
+.btns_1{
+  width: 100%;
+  height: 100rpx;
+  border-radius: 12rpx;
+  font-size: 36rpx;
+  color: white;
+}
+.btns_2{
+  display: inline-block;
+  margin-top: 27rpx;
+  width: 100%;
+  height: 100rpx;
+  border-radius: 12rpx;
+  font-size: 36rpx;
+  color: white;
+}
+
+
+/* 看视频砍价弹框模态框样式布局 */
+.ChanceModal{
+  position: fixed;
+  left: 0rpx;
+  top: 0rpx;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  z-index: 999;
+}
+.selfmodalbg{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: 0rpx;
+  bottom: 0rpx;
+  width: 676rpx;
+  height: 455rpx;
+  z-index: -1;
+}
+.ChanceModalContent{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: 0rpx;
+  bottom: 0rpx;
+  width: 676rpx;
+  height: 455rpx;
+  border-radius: 26rpx;
+  z-index: 1000;
+}
+.ChanceModalCloseview{
+  position: absolute;
+  right:22rpx; 
+  top:23rpx;
+  width:56rpx;
+  height:56rpx;
+  z-index: 1001;
+}
+.ChanceModalClose{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right:0rpx; 
+  top:0rpx;
+  bottom: 0rpx;
+  width:30rpx;
+  height:30rpx;
+  z-index: 1001;
+}
+.ChanceModalTitle{
+  position: relative;
+  margin: 0 auto;
+  width: 280rpx;
+  height: 102rpx;
+  line-height: 102rpx;
+  text-align: center;
+  background: transparent;
+  color: white;
+  font-size: 37rpx;
+}
+.chanceleft{
+  position: absolute;
+  left: 0rpx;
+  top: 41rpx;
+  width: 34rpx;
+  height:20rpx;
+}
+.chanceright{
+  position: absolute;
+  right: 0rpx;
+  top: 41rpx;
+  width: 34rpx;
+  height:20rpx;
+}
+.ChanceModalBody{
+  position: absolute;
+  bottom: 0rpx;
+  width: 100%;
+  height: 353rpx;
+  background-color: white;
+  border-bottom-left-radius: 26rpx;
+  border-bottom-right-radius: 26rpx;
+}
+.ChanceModalText{
+  margin-top: 116rpx;
+  width: 100%;
+  line-height: 60rpx;
+  text-align: center;
+  color: #404040;
+  font-size: 37rpx;
+  font-weight: 600;
+}
+
+/* 好友助力 */
+.scroll{
+  position: relative;
+  margin: 0 auto;
+  margin-top: 122rpx;
+  width: 672rpx;
+  height: 690rpx;
+  background-color: white;
+  border-radius: 10rpx;
+}
+.scroll-top{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: -50rpx;
+  width: 543rpx;
+  height: 100rpx;
+}
+.scroll-title{
+  position: absolute;
+  left: 248rpx;
+  top: -50rpx;
+  height: 100rpx;
+  line-height: 100rpx;
+  width: 161rpx;
+  color: white;
+  font-size: 40rpx;
+  text-align: center;
+  z-index: 2;
+}
+/* 好友助力滚动框 */
+.scrollcontent{
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding-top: 49rpx;
+  padding-bottom: 49rpx;
+}
+.scrollcontent_line{
+  padding: 0rpx;
+  margin: 0 auto;
+  width: 600rpx;
+  height: 116rpx;
+  border-bottom:1rpx solid #e3e3e3;
+}
+.scrollcontent_line:last-child{
+  border-bottom:0rpx;
+}
+.scrollcontent_line_1{
+  display: inline-block;
+  margin-top: 24rpx;
+  width: 68rpx; 
+  height: 68rpx;
+  vertical-align: top;
+  border-radius: 50%;
+}
+.scrollcontent_line_2{
+  display: inline-block;
+  box-sizing: border-box;
+  padding-left: 19rpx;
+  max-width:202rpx; 
+  height: 116rpx;
+  line-height: 116rpx;
+  font-size: 30rpx;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  vertical-align: top;
+}
+.scrollcontent_line_3{
+  display: inline-block;
+  width: 330rpx;
+  height: 116rpx;
+  line-height: 116rpx;
+  font-size: 30rpx;
+  vertical-align: top;
+}
+
+.scrollcontentnone{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.scrollcontentnone_pic{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: 227rpx;
+  width: 211rpx;
+  height:202rpx;
+}
+.scrollcontentnone_text{
+  width: 100%;
+  position: absolute;
+  top: 438rpx;
+  font-size: 32rpx;
+  color:#919191;
+  text-align: center;
+}
+
+
+
+
+/* 看视频砍价弹框模态框样式布局 */
+.CutModal{
+  position: fixed;
+  left: 0rpx;
+  top: 0rpx;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  z-index: 999;
+}
+.CutModalContent{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: 0rpx;
+  bottom: 0rpx;
+  width: 676rpx;
+  height: 455rpx;
+  border-radius: 26rpx;
+  z-index: 1000;
+}
+.CutModalCloseview{
+  position: absolute;
+  right:22rpx; 
+  top:23rpx;
+  width:56rpx;
+  height:56rpx;
+  z-index: 1001;
+}
+.CutModalClose{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right:0rpx; 
+  top:0rpx;
+  bottom: 0rpx;
+  width:30rpx;
+  height:30rpx;
+  z-index: 1001;
+}
+.CutModalTitle{
+  position: relative;
+  margin: 0 auto;
+  width: 280rpx;
+  height: 102rpx;
+  line-height: 102rpx;
+  text-align: center;
+  background: transparent;
+  color: white;
+  font-size: 37rpx;
+}
+.cutleft{
+  position: absolute;
+  left: 0rpx;
+  top: 41rpx;
+  width: 34rpx;
+  height:20rpx;
+}
+.cutright{
+  position: absolute;
+  right: 0rpx;
+  top: 41rpx;
+  width: 34rpx;
+  height:20rpx;
+}
+.CutModalBody{
+  position: absolute;
+  bottom: 0rpx;
+  width: 100%;
+  height: 353rpx;
+  background-color: white;
+  border-bottom-left-radius: 26rpx;
+  border-bottom-right-radius: 26rpx;
+}
+.CutModalText{
+  margin-top: 110rpx;
+  width: 100%;
+  line-height: 60rpx;
+  text-align: center;
+  color: #404040;
+  font-size: 40rpx;
+  font-weight: 600;
+}
+
+
+
+/* 兑奖模态框样式布局 */
+.WinModal{
+  position: fixed;
+  left: 0rpx;
+  top: 0rpx;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  z-index: 999;
+}
+/* 兑奖G550模态框样式布局 */
+.WinModalContentpad{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: 0rpx;
+  bottom: 0rpx;
+  width: 676rpx;
+  height: 992rpx;
+  border-radius: 26rpx;
+  z-index: 1000;
+}
+.WinpadModalCloseview{
+  position: absolute;
+  right:25rpx; 
+  top:26rpx;
+  width:50rpx;
+  height:50rpx;
+  z-index: 1001;
+}
+.WinpadModalClose{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right:0rpx; 
+  top:0rpx;
+  bottom: 0rpx;
+  width:30rpx;
+  height:30rpx;
+  z-index: 1001;
+}
+.padTitle{
+  position: relative;
+  margin: 0 auto;
+  width: 264rpx;
+  height: 104rpx;
+  line-height: 104rpx;
+  text-align: center;
+  color: #ff6540;
+  font-size: 38rpx;
+}
+.padleft{
+  position: absolute;
+  left: 0rpx;
+  top: 41rpx;
+  width: 34rpx;
+  height:20rpx;
+}
+.padright{
+  position: absolute;
+  right: 0rpx;
+  top: 41rpx;
+  width: 34rpx;
+  height:20rpx;
+}
+
+.pad{
+  width: 100%;
+  height: 328rpx;
+}
+.Winpadicon{
+  display: block;
+  margin: 0 auto;
+  width: 428rpx;
+  height: 285rpx;
+}
+.WinpadText{
+  width: 100%;
+  text-align: center;
+  color: rgba(1,1,1,0.8);
+  font-size: 28rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+}
+.Winpad-bottom{
+  position: absolute;
+  left: 0rpx;
+  bottom: 0rpx;
+  width: 100%;
+  height: 540rpx;
+  border-bottom-left-radius: 26rpx;
+  border-bottom-right-radius: 26rpx;
+}
+/* 文本框部分 */
+.Winpad-input{
+  margin: 0 auto;
+  display: flex;
+  width: 540rpx;
+  height: 70rpx;
+}
+.Winpad-input:first-child{
+  margin-top: 21rpx;
+}
+.Winpad-input-title{
+  height: 70rpx;
+  line-height: 70rpx;
+  color: #ff8f36;
+  font-size: 33rpx;
+  font-weight: 600;
+}
+.Winpad-input_1{
+  flex: 0 0 171rpx;
+  width: 171rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  color: rgba(1,1,1,0.8);
+  font-size: 33rpx;
+}
+.Winpad-input_2{
+  flex: 1;
+  height: 70rpx;
+  line-height: 70rpx;
+  color: rgba(1,1,1,0.6);
+  opacity: 0.8;
+  font-size: 29rpx;
+}
+.Winpad-input-foot{
+  height: 70rpx;
+  line-height: 42rpx;
+  color: rgba(1,1,1,0.6);
+  font-size: 26rpx;
+}
+.Winpad-bottom-btn{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  bottom: 56rpx;
+  width: 288rpx;
+  height: 92rpx;
+  border: 0rpx;
+  border-radius: 45rpx;
+  background-color:#ff8f36;
+  color:white;
+  font-size: 37rpx;
+}
+
+/* 兑奖券模态框样式布局 */
+.WinModalContentticket{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: 0rpx;
+  bottom: 0rpx;
+  width: 676rpx;
+  height: 992rpx;
+  border-radius: 26rpx;
+  z-index: 1000;
+}
+.WinticketModalCloseview{
+  position: absolute;
+  right:25rpx; 
+  top:26rpx;
+  width:50rpx;
+  height:50rpx;
+  z-index: 1001;
+}
+.WinticketModalClose{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right:0rpx; 
+  top:0rpx;
+  bottom: 0rpx;
+  width:30rpx;
+  height:30rpx;
+  z-index: 1001;
+}
+.ticketTitle{
+  position: relative;
+  margin: 0 auto;
+  width: 264rpx;
+  height: 104rpx;
+  line-height: 104rpx;
+  text-align: center;
+  color: #ff6540;
+  font-size: 38rpx;
+}
+.ticketleft{
+  position: absolute;
+  left: 0rpx;
+  top: 41rpx;
+  width: 34rpx;
+  height:20rpx;
+}
+.ticketright{
+  position: absolute;
+  right: 0rpx;
+  top: 41rpx;
+  width: 34rpx;
+  height:20rpx;
+}
+
+.ticket{
+  width: 100%;
+  height: 328rpx;
+}
+
+.WinticketText{
+  width: 100%;
+  height: 97rpx;
+  line-height: 97rpx;
+  color: rgba(1,1,1,0.8);
+  font-size: 28rpx;
+  text-align: center;
+}
+.Winticketicon{
+  display: block;
+  margin: 0 auto;
+  margin-top: 30rpx;
+  width: 543rpx;
+  height: 209rpx;
+}
+.Winticket-bottom{
+  position: absolute;
+  left: 0rpx;
+  bottom: 0rpx;
+  width: 100%;
+  height: 540rpx;
+  border-bottom-left-radius: 26rpx;
+  border-bottom-right-radius: 26rpx;
+}
+/* 文本框部分 */
+.Winticket-input{
+  margin: 0 auto;
+  display: flex;
+  width: 540rpx;
+  height: 87rpx;
+}
+.Winticket-input:first-child{
+  margin-top: 53rpx;
+}
+.Winticket-input-title{
+  height: 87rpx;
+  line-height: 87rpx;
+  color: #ff8f36;
+  font-size: 33rpx;
+  font-weight: 600;
+}
+.Winticket-input_1{
+  flex: 0 0 171rpx;
+  width: 172rpx;
+  height: 87rpx;
+  line-height: 87rpx;
+  color: rgba(1,1,1,0.8);
+  font-size: 33rpx;
+}
+.Winticket-input_2{
+  flex: 1;
+  height: 87rpx;
+  line-height: 87rpx;
+  color: rgba(1,1,1,0.6);
+  opacity: 0.8;
+  font-size: 29rpx;
+}
+.Winticket-input-foot{
+  height: 75rpx;
+  line-height: 42rpx;
+  color: rgba(1,1,1,0.6);
+  font-size: 26rpx;
+}
+.Winticket-bottom-btn{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  bottom: 56rpx;
+  width: 288rpx;
+  height: 92rpx;
+  border: 0rpx;
+  border-radius: 45rpx;
+  background-color:#ff8f36;
+  color:white;
+  font-size: 37rpx;
+}

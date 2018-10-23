@@ -1,0 +1,391 @@
+/* component/other-component/other-component.wxss */
+@import "../../public/image.wxss";
+.other-content{
+  margin-top: 958rpx;
+  padding-bottom: 88rpx;
+  width: 100%;
+  background-color: #ff350a;
+  overflow: hidden;
+}
+.nowin{
+  box-sizing: border-box;
+  position: relative;
+  margin: 0 auto;
+  margin-top: 38rpx;
+  padding-top: 200rpx;
+  width: 673rpx;
+  height: 395rpx;
+  background-color: white;
+  border-radius: 10rpx;
+}
+.avtar{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: -36rpx;
+  width: 110rpx;
+  height: 110rpx;
+  border-radius: 50%;
+}
+.infoName{
+  position: absolute;
+  top: 80rpx;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  font-size: 27rpx;
+  color: #000000
+}
+/* 获奖界面样式 */
+.win{
+  width: 100%;
+}
+.win-title{
+  margin-bottom: 20rpx;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 40rpx;
+  font-weight: 600;
+}
+.Winicon{
+  display: block;
+  margin: 0 auto;
+  width: 558rpx;
+  height: 371rpx;
+}
+.Winicons{
+  display: block;
+  margin: 0 auto;
+  width: 543rpx;
+  height: 209rpx;
+}
+.win-content{
+  margin-top: 20rpx;
+  width: 100%;
+  color: white;
+  text-align: center;
+  font-size: 27rpx;
+}
+
+/* 进度条样式 */
+.percent{
+  position: relative;
+  margin: 0 auto;
+  width: 560rpx;
+  height: 30rpx;
+}
+.percent0{
+  display: block;
+  width: 560rpx;
+  height: 30rpx;
+}
+.percent_tip{
+  position: absolute;
+  top: -68rpx;
+  width: 124rpx;
+  height: 68rpx;
+  z-index: 1;
+}
+.percent_tip_text{
+  position: absolute;
+  top: 0rpx;
+  width: 100%;
+  height: 50rpx;
+  line-height: 50rpx;
+  text-align: center;
+  color:white;
+  font-size: 32rpx;
+}
+.percentcurrent{
+  position: absolute;
+  left: 0rpx;
+  top: 0rpx;
+  height: 30rpx;
+  border-radius: 20rpx;
+  z-index:1;
+}
+
+
+.percentleft{
+  display: inline-block;
+  box-sizing: border-box;
+  padding-left: 48rpx;
+  width: 50%;
+  height: 36rpx;
+  line-height: 36rpx;
+  color: #2e2e2e;
+  font-size: 24rpx;
+}
+
+.percentright{
+  text-align: right;
+  box-sizing: border-box;
+  padding-right: 16rpx;
+  display: inline-block;
+  width: 50%;
+  color: #2e2e2e;
+  font-size: 24rpx;
+}
+.selfinfo{
+  margin-top: 29rpx;
+  width: 100%;
+}
+
+.info{
+  width: 100%;
+  text-align: center;
+  line-height: 37rpx;
+  color: rgba(0,0,0,0.8);
+  font-size: 27rpx;
+}
+
+.infoPirce{
+  display: inline;
+  color: #ff0000;
+}
+
+
+/* 按钮样式 */
+.btns{
+  margin: 0 auto;
+  margin-top: 55rpx;
+  width: 673rpx;
+}
+.btns_1{
+  width: 100%;
+  height: 100rpx;
+  border-radius: 12rpx;
+  font-size: 36rpx;
+  color: white;
+}
+.btns_2{
+  display: inline-block;
+  margin-top: 27rpx;
+  width: 100%;
+  height: 100rpx;
+  border-radius: 12rpx;
+  font-size: 36rpx;
+  color: white;
+}
+
+
+/* 好友助力 */
+.scroll{
+  position: relative;
+  margin: 0 auto;
+  margin-top: 122rpx;
+  width: 672rpx;
+  height: 690rpx;
+  background-color: white;
+  border-radius: 10rpx;
+}
+.scroll-top{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: -50rpx;
+  width: 543rpx;
+  height: 100rpx;
+}
+.scroll-title{
+  position: absolute;
+  left: 248rpx;
+  top: -50rpx;
+  height: 100rpx;
+  line-height: 100rpx;
+  width: 161rpx;
+  color: white;
+  font-size: 40rpx;
+  text-align: center;
+  z-index: 2;
+}
+/* 好友助力滚动框 */
+.scrollcontent{
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding-top: 49rpx;
+  padding-bottom: 49rpx;
+}
+.scrollcontent_line{
+  padding: 0rpx;
+  margin: 0 auto;
+  width: 600rpx;
+  height: 116rpx;
+  border-bottom:1rpx solid #e3e3e3;
+}
+.scrollcontent_line:last-child{
+  border-bottom:0rpx;
+}
+.scrollcontent_line_1{
+  display: inline-block;
+  margin-top: 24rpx;
+  width: 68rpx; 
+  height: 68rpx;
+  vertical-align: top;
+  border-radius: 50%;
+}
+.scrollcontent_line_2{
+  display: inline-block;
+  box-sizing: border-box;
+  padding-left: 19rpx;
+  max-width:202rpx; 
+  height: 116rpx;
+  line-height: 116rpx;
+  font-size: 30rpx;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  vertical-align: top;
+}
+.scrollcontent_line_3{
+  display: inline-block;
+  width: 330rpx;
+  height: 116rpx;
+  line-height: 116rpx;
+  font-size: 30rpx;
+  vertical-align: top;
+}
+
+.scrollcontentnone{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.scrollcontentnone_pic{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: 227rpx;
+  width: 211rpx;
+  height:202rpx;
+}
+.scrollcontentnone_text{
+  width: 100%;
+  position: absolute;
+  top: 438rpx;
+  font-size: 32rpx;
+  color:#919191;
+  text-align: center;
+}
+
+
+/* 看视频砍价弹框模态框样式布局 */
+.CutModal{
+  position: fixed;
+  left: 0rpx;
+  top: 0rpx;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  z-index: 999;
+}
+.othermodalbg{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: 0rpx;
+  bottom: 0rpx;
+  width: 676rpx;
+  height: 455rpx;
+  z-index: -1;
+}
+.CutModalContent{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: 0rpx;
+  bottom: 0rpx;
+  width: 676rpx;
+  height: 455rpx;
+  border-radius: 26rpx;
+  z-index: 1000;
+}
+.CutModalCloseview{
+  position: absolute;
+  right:22rpx; 
+  top:23rpx;
+  width:56rpx;
+  height:56rpx;
+  z-index: 1001;
+}
+.CutModalClose{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right:0rpx; 
+  top:0rpx;
+  bottom: 0rpx;
+  width:30rpx;
+  height:30rpx;
+  z-index: 1001;
+}
+.CutModalTitle{
+  position: relative;
+  margin: 0 auto;
+  width: 280rpx;
+  height: 102rpx;
+  line-height: 102rpx;
+  text-align: center;
+  background: transparent;
+  color: white;
+  font-size: 37rpx;
+}
+.cutleft{
+  position: absolute;
+  left: 0rpx;
+  top: 41rpx;
+  width: 34rpx;
+  height:20rpx;
+}
+.cutright{
+  position: absolute;
+  right: 0rpx;
+  top: 41rpx;
+  width: 34rpx;
+  height:20rpx;
+}
+.CutModalBody{
+  position: absolute;
+  bottom: 0rpx;
+  width: 100%;
+  height: 353rpx;
+  background-color: white;
+  border-bottom-left-radius: 26rpx;
+  border-bottom-right-radius: 26rpx;
+}
+.CutModalText{
+  margin-top: 110rpx;
+  width: 100%;
+  line-height: 60rpx;
+  text-align: center;
+  color: #404040;
+  font-size: 40rpx;
+  font-weight: 600;
+}
+
+
+
+.toast{
+  margin: auto;
+  position: fixed;
+  left: 0rpx;
+  right: 0rpx;
+  top: 0rpx;
+  bottom: 0rpx;
+  width: 350rpx;
+  height:70rpx;
+  line-height: 70rpx; 
+  color:white;
+  background-color: rgba(0,0,0,0.6);
+  font-size: 32rpx;
+  text-align: center;
+  z-index: 999;
+  border-radius: 20rpx;
+}

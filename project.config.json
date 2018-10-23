@@ -1,0 +1,55 @@
+{
+	"description": "项目配置文件。",
+	"packOptions": {
+		"ignore": []
+	},
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"libVersion": "2.2.4",
+	"appid": "wxc64f4194882fbdf1",
+	"projectname": "readboyActivity",
+	"isGameTourist": false,
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"currentL": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 0,
+			"list": [
+				{
+					"id": 0,
+					"name": "转发模式",
+					"pathName": "pages/index/index",
+					"query": "id=o1VL64hFMqSRTsEM72PcpJZn6T8M&nickName=Robrt&avatarUrl=https%3A%2F%2Fwx.qlogo.cn%2Fmmopen%2Fvi_32%2FaZRjMM52d9X3NFhPiagYBuibCfcPpaiciaiagvWrvFVebh1DAictUNjjhk9bArrt07rzhqne9foNTOaE9J9827mws4Dw%2F132",
+					"scene": "1007"
+				},
+				{
+					"id": 1,
+					"name": "鑫转发模式",
+					"pathName": "pages/index/index",
+					"query": "id=o1VL64iOqoI9PyhxCffLBWkKM0SA&nickName=陌&avatarUrl=https://wx.qlogo.cn/mmopen/vi_32/gVdLx91Zf5F2bv6evNbBDKCn1NmE83nIbCSW1GTn6e1s1YBm0nem6sMqgKAqTjV2OXzKTECHdfBXIP9ejmNkQQ/132",
+					"scene": "1007"
+				}
+			]
+		}
+	}
+}

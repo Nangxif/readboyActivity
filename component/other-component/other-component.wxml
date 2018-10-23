@@ -1,0 +1,74 @@
+<!--component/other-component/other-component.wxml-->
+<view class='other-content'>
+  <view class='nowin' wx:if="{{!isWin}}">
+    <image src='{{avatarUrl}}' class='avtar'></image>
+    <view class='infoName'>{{nickName}}</view>
+    <view class='percent'>
+      <view class='percent_tip tip_base' style="left:{{(originWidth-64)+'rpx'}}" animation="{{!isAmiantion?animationData1:animationDatas}}"><view class='percent_tip_text'>{{3698-originmuch}}元</view></view>
+      <view class='percent100 percentcurrent' style='width:{{originWidth+"rpx"}}' animation="{{!isAmiantion?animationData:animationDatas}}"></view>
+      <image src='../../images/percent0.png' class='percent0'></image>
+    </view>
+    <view class='percentleft'>￥0</view>
+    <view class='percentright'>￥3698</view>
+    <view class='selfinfo' wx:if="{{!isWin}}">
+      <view class='info'>已经砍下<view class='infoPirce'>{{originmuch}}</view>元，还差<view class='infoPirce'>{{3698-originmuch}}</view>元</view>
+    </view>
+  </view>
+  <view class='win' wx:if="{{isWin}}"><!--兑奖之后的界面-->
+    <view class='win-title'>中奖啦</view>
+    <image src='../../images/pad.png' class='Winicon' wx:if="{{ranking<=10&&ranking>0}}"></image>
+    <image src='../../images/200.png' class='Winicons' wx:if="{{ranking>10}}"></image>
+    <view class='win-content'>恭喜您获得{{ranking>10?"200元优惠券":"G550A一台"}}</view>
+  </view>
+
+  <view class='btns' wx:if="{{isLogin&&!isWin}}"><!--已登录时按钮-->
+    <button class='btns_1 btns-begin' bindtap='cut' wx:if="{{isCut==1}}">帮好友砍价</button>
+    <button class='btns_1 btns-begin-primary' bindtap='cut' wx:if="{{isCut==-3}}">今天已不能帮忙砍价，明天再来吧</button>
+    <button class='btns_1 btns-begin-primary' bindtap='cut' wx:if="{{isCut==-1}}">助力已满三次，明天再来吧</button>
+    <button class='btns_1 btns-begin-primary' bindtap='cut' wx:if="{{isCut==-2}}">对方已没有砍价机会，明天再来吧</button>
+    <button class='btns_2 btns-begin' bindtap='wanttijoin'>我也要砍价领学生平板</button>
+  </view>
+  <view class='btns' wx:if="{{!isLogin}}"><!--未登录时按钮-->
+    <button class='{{isCut<=0?"btns_1 btns-begin-primary":"btns_1 btns-begin"}}' open-type='getUserInfo' bindgetuserinfo="bindGetUserInfo" data-index='0'>{{isCut<=0?"帮过一次啦，明天再来吧":"帮好友砍价"}}</button>
+    <button class='btns_2 btns-other' open-type='getUserInfo' bindgetuserinfo="bindGetUserInfo" data-index='1'>我也要砍价领学生平板</button>
+  </view>
+
+
+  <view class='scroll'>
+    <image src='../../images/top.png' class='scroll-top'></image>
+    <view class='scroll-title'>砍价记录</view>
+    <scroll-view class='scrollcontent' scroll-y wx:if="{{friend_help.length>0}}">
+      <view wx:for="{{friend_help}}" class='scrollcontent_line'>
+        <image src='{{item.avatar}}' class='scrollcontent_line_1'></image>
+        <view class='scrollcontent_line_2'>{{item.nickname}}</view>
+        <view class='scrollcontent_line_3'>：砍价成功，砍下<view style='color:#e1270e;display:inline;'>{{item.money}}</view>元</view>
+      </view>
+    </scroll-view>
+    <view class='scrollcontentnone' wx:if="{{friend_help.length<=0}}">
+      <image src='../../images/none.png' class='scrollcontentnone_pic'></image>
+      <view class='scrollcontentnone_text'>空空如也</view>
+    </view>
+  </view>
+</view>
+
+ <!--砍价弹框  -->
+  <cover-view class='CutModal' style='{{modal[1]?"display:block;":"display:none;"}}'>
+    <cover-image src='../../images/00.png' class='othermodalbg'></cover-image>
+    <cover-view class='CutModalContent'>
+      <cover-view class='CutModalCloseview' bindtap='closeModal' data-out='1'>
+        <cover-image class='CutModalClose' src='../../images/close.png'></cover-image>
+      </cover-view>
+      <cover-view class='CutModalTitle'>
+        <cover-image src='../../images/wholeft.png' class='cutleft'></cover-image>
+        恭喜你
+        <cover-image src='../../images/whoright.png' class='cutright'></cover-image>
+      </cover-view>
+      <cover-view class='CutModalBody'>
+        <cover-view class='CutModalText'><cover-view style='display:inline-block;'>成功砍下</cover-view><cover-view style='color:#ff5c00;display:inline-block;width:122rpx;text-align:center;'>{{howmuch}}</cover-view><cover-view style='display:inline-block;'>元</cover-view></cover-view>
+      </cover-view>
+    </cover-view>
+  </cover-view>
+
+
+<!-- toast弹框 -->
+<cover-view style="{{toast?'display:block;':'display:none;'}}" class='toast'>砍价次数已达上限</cover-view>

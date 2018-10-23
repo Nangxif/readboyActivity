@@ -1,0 +1,102 @@
+<view class="containerstart" wx:if="{{isStart}}"><!-- 活动未结束-->
+  <image src='../../images/startbg.png' class='startbg'></image>
+  <view class='bgtitle'>价值3698元的学生平板G550A免费领走，先到先得</view>
+  <my-component wx:if="{{myself}}" id="componentId" bind:myevent="onMyEvent" obj="{{obj}}"/><!--活动未结束非分享组件-->
+  <other-component wx:if="{{isShare}}"  bind:myevent="onMyEvent"/><!--活动未结束分享组件-->
+  <!-- 跑马灯 -->
+  <view class='lamp' wx:if="{{prize.length>0}}">
+    <view class='lamp-content' style="--marqueeWidth--:{{-marquee.width}}rpx;--marqueeTime--:{{marquee.time}}s;">
+      {{marquee.text}}
+    </view>
+  </view>
+  <view class='btnclas btns-length'>
+    <view class='{{modal[0]?"btnclas_1 primary":"btnclas_1"}}' bindtap='showModal' data-tip='0'>活动介绍</view>
+    <view class='{{modal[1]?"btnclas_2 primary":"btnclas_2"}}'  bindtap='showModal' data-tip='1'>排行榜</view>
+    <view class='btnclas_3' bindtap='go'>新品抢先看</view>
+  </view>
+  <!-- 活动介绍弹框 -->
+  <view class='DetailModal' style='{{modal[0]?"display:block;":"display:none;"}}'>
+    <image src='../../images/0.png' class='indexmodalbg'></image>
+    <view class='DetailModalContent'>
+      <view class='DetailModalCloseview' bindtap='closeModal' data-out='0'>
+        <image class='DetailModalClose' src='../../images/close.png'></image>
+      </view>
+      <view class='DetailModalTitle'>
+        <image src='../../images/wholeft.png' class='detailleft'></image>
+        活动说明
+        <image src='../../images/whoright.png' class='detailright'></image>
+      </view>
+      <view class='DetailModalBody'>
+        <view class='detailItemScroll'>
+          <view class='detailItem'>
+            <text space="true">一、活动时间\n2018年9月25号~2018年10月1号\n二、参与规则\n1.点击活动首页“开始砍价”按钮即可参加活动；\n2.活动期间，参与者每天可以为自己砍价一次；观看视频可以再收获一次砍价机会；可以邀请好友帮忙砍价；每人每天只有三次帮砍价机会，每位用户每天最多砍价100次（自己+好友帮砍）；\n3.当价格被砍到0元时可获得奖品。砍价未到0元时无法获奖奖品，且不设购买；\n4.数量有限，先到先得，最先完成砍价的十位用户可获得读书郎学生平板，之后完成砍价的用户有机会获得价值200元的天猫商城读书郎学生平板代金券；\n5.如有疑问，可关注“读书郎”微信公众号或拨打400-8325-888客服热线。\n三、奖品设置\n价值3698元的读书郎学生平板G550A十台。不限量价值200元天猫商城读书郎学生平板代金券。\n四、奖品发放\n统一以邮寄的方式。获奖用户需按规则填写好邮寄信息，信息不全者，视为自动放弃领奖资格。奖品将在活动结束后一周内寄出。\n本活动最终解释权归本公司所有</text>
+          </view>
+          
+          <!-- <view class='detailItem'>
+            <view class='detailItem-topic'>一、活动时间</view>
+            <view class='detailItem-text'>2018年9月25号~2018年10月1号</view>
+          </view>
+          <view class='detailItem'>
+            <view class='detailItem-topic'>二、参与规则</view>
+            <view class='detailItem-text'>1.点击活动首页“开始砍价”按钮即可参加活动；</view>
+            <view class='detailItem-text'>2.活动期间，参与者每天可以为自己砍价一次；观看视频可以再收获一次砍价机会；可以邀请好友帮忙砍价；每人每天只有三次帮砍价机会，每位用户每天最多砍价100次（自己+好友帮砍）；</view>
+            <view class='detailItem-text'>3.当价格被砍到0元时可获得奖品。砍价未到0元时无法获奖奖品，且不设购买；</view>
+            <view class='detailItem-text'>4.数量有限，先到先得，最先完成砍价的十位用户可获得读书郎学生平板，之后完成砍价的用户有机会获得价值200元的天猫商城读书郎学生平板代金券；</view>
+            <view class='detailItem-text'>5.如有疑问，可关注“读书郎”微信公众号或拨打400-8325-888客服热线。</view>
+          </view>
+          <view class='detailItem'>
+            <view class='detailItem-topic'>三、奖品设置</view>
+            <view class='detailItem-text'>价值3698元的读书郎学生平板G550A十台。不限量价值200元天猫商城读书郎学生平板代金券。</view>
+          </view>
+          <view class='detailItem'>
+            <view class='detailItem-topic'>四、奖品发放</view>
+            <view class='detailItem-text'>统一以邮寄的方式。获奖用户需按规则填写好邮寄信息，信息不全者，视为自动放弃领奖资格。奖品将在活动结束后一周内寄出。</view>
+          </view>
+          <view class='detailItem'><view class='detailItem-text' style='margin-bottom:38rpx;'>本活动最终解释权归本公司所有</view></view> -->
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 排行榜模态框 -->
+  <view class='rankingModal' style='{{modal[1]?"display:block;":"display:none;"}}'>
+    <image src='../../images/0.png' class='indexmodalbg'></image>
+    <view class='rankingModalContent'>
+      <view class='rankingModalCloseview' bindtap='closeModal' data-out='1'>
+        <image class='rankingModalClose' src='../../images/close.png'></image>
+      </view>  
+      <view class='rankingModalTitle'>
+        <image src='../../images/wholeft.png' class='rankingleft'></image>
+        排行榜
+        <image src='../../images/whoright.png' class='rankingright'></image>
+      </view>
+      <view class='ranking-content'>
+        <view class='rankingnone' style='{{prize.length<=0?"display:block;":"display:none;"}}'>
+          <image src='../../images/none.png' class='rankingnone_pic'></image>
+          <view class='rankingnone_text'>空空如也</view>
+        </view>
+        <view class='ranking-scroll' style='{{prize.length>0&&prize.length<=10?"display:block;":"display:none;"}}'>
+          <view class='ranking-prize' wx:for="{{prize}}">
+            <view class='ranking-prize_1'><image src='{{item.avatar}}' class='ranking-prize_pic'></image></view>
+            <view class='ranking-prize_2'><view class='ranking-prize-name'>{{item.nickname}}</view>：完成砍价，获得读书郎学生平板G550A一台</view>
+          </view>
+        </view>
+        <view class='ranking-scroll' style='{{prize.length>10?"display:block;":"display:none;"}}'>
+          <view class='ranking-prize' wx:for="{{prize}}">
+            <view class='ranking-prize_1'><image src='{{item.avatar}}' class='ranking-prize_pic'></image></view>
+            <view class='ranking-prize_2'><view class='ranking-prize-name'>{{item.nickname}}</view>：完成砍价，获得读书郎学生平板200元优惠券</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+
+
+
+<view class="containerend" wx:if="{{isEnd}}"><!-- 活动已结束-->
+  <image src='../../images/endbg.png' class='endbg'></image>
+  <end-component></end-component>
+</view>
+
+

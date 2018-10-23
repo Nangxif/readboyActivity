@@ -1,0 +1,402 @@
+/**index.wxss**/
+@import "../../public/image.wxss";
+.vi{
+  position: absolute;
+  left: 83rpx;
+  top: 509rpx;
+  width:582rpx;
+  height:343rpx;
+}
+.containerstart{
+  position: absolute;
+  padding: 0rpx;
+  width: 100%;
+  background-color: #fc4056;
+}
+/* 活动未结束 */
+.startbg{
+  position: absolute;
+  top: 0rpx;
+  width: 100%;
+  height: 905rpx;
+}
+.bgtitle{
+  position: absolute;
+  top: 909rpx;
+  color: white;
+  font-size: 27rpx;
+  width: 100%;
+  height: 27rpx;
+  line-height: 27rpx;
+  text-align: center;
+}
+my-component,other-component{
+  width: 100%;
+}
+/* 活动说明模态框样式布局 */
+.DetailModal{
+  position: fixed;
+  left: 0rpx;
+  top: 0rpx;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  z-index: 999;
+  overflow: hidden;
+}
+.DetailModalContent{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: 0rpx;
+  bottom: 0rpx;
+  width: 676rpx;
+  height: 978rpx;
+  border-radius: 26rpx;
+  z-index: 1000;
+}
+.indexmodalbg{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: 0rpx;
+  bottom: 0rpx;
+  width: 676rpx;
+  height: 978rpx;
+  z-index: -1;
+}
+.DetailModalCloseview{
+  position: absolute;
+  right:22rpx; 
+  top:23rpx;
+  width:56rpx;
+  height:56rpx;
+  z-index: 1001;
+}
+.DetailModalClose{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right:0rpx; 
+  top:0rpx;
+  bottom: 0rpx;
+  width:30rpx;
+  height:30rpx;
+  z-index: 1001;
+}
+.DetailModalTitle{
+  position: relative;
+  margin: 0 auto;
+  width: 280rpx;
+  height: 102rpx;
+  line-height: 102rpx;
+  text-align: center;
+  background: transparent;
+  color: white;
+  font-size: 37rpx;
+}
+.detailleft{
+  position: absolute;
+  left: 0rpx;
+  top: 41rpx;
+  width: 34rpx;
+  height:20rpx;
+}
+.detailright{
+  position: absolute;
+  right: 0rpx;
+  top: 41rpx;
+  width: 34rpx;
+  height:20rpx;
+}
+.DetailModalBody{
+  position: absolute;
+  bottom: 0rpx;
+  width: 100%;
+  height: 876rpx;
+  background-color: white;
+  border-bottom-left-radius: 26rpx;
+  border-bottom-right-radius: 26rpx;
+  overflow: hidden;
+  z-index: 1000;
+}
+.detailItemScroll{
+  box-sizing: border-box;
+  padding-top: 32rpx;
+  padding-bottom: 32rpx;
+  width:100%;
+  height: 100%;
+  overflow-y: scroll;
+}
+.detailItem{
+  box-sizing: border-box;
+  margin: 0 auto;
+  width:556rpx; 
+  word-wrap:break-word;
+  word-break:break-all;
+  white-space:pre-wrap;
+  font-size: 29rpx;
+}
+.detailItem text{
+  font-size: 29rpx;
+}
+/* .detailItem-topic{
+  font-size: 29rpx;
+  color: black;
+  font-weight: 600;
+}
+.detailItem-text{
+  font-size: 29rpx;
+  color: #9e9e9e;
+  width: 100%;
+  white-space: pre-line;
+  flex-wrap: warp ;
+} */
+
+/* 排行榜模态框样式布局 */
+.rankingModal{
+  position: fixed;
+  left: 0rpx;
+  top: 0rpx;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  z-index: 999;
+}
+.rankingModalContent{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: 0rpx;
+  bottom: 0rpx;
+  width: 676rpx;
+  height: 978rpx;
+  border-radius: 26rpx;
+  z-index: 1000;
+}
+/* 关闭按钮 */
+.rankingModalCloseview{
+  position: absolute;
+  right:22rpx; 
+  top:23rpx;
+  width:56rpx;
+  height:56rpx;
+  z-index: 1001;
+}
+.rankingModalClose{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right:0rpx; 
+  top:0rpx;
+  bottom: 0rpx;
+  width:30rpx;
+  height:30rpx;
+  z-index: 1001;
+}
+.rankingModalTitle{
+  position: relative;
+  margin: 0 auto;
+  width: 262rpx;
+  height: 102rpx;
+  line-height: 102rpx;
+  text-align: center;
+  background: transparent;
+  color: white;
+  font-size: 37rpx;
+}
+.rankingleft{
+  position: absolute;
+  left: 0rpx;
+  top: 41rpx;
+  width: 34rpx;
+  height:20rpx;
+}
+.rankingright{
+  position: absolute;
+  right: 0rpx;
+  top: 41rpx;
+  width: 34rpx;
+  height:20rpx;
+}
+/* 排行榜弹框排行列表样式布局 */
+.ranking-prize{
+  margin: 0 auto;
+  display: flex;
+  width: 620rpx;
+  height: 138rpx;
+  font-size: 29rpx;
+  background-color: white;
+  border-bottom: 1rpx solid #f1f1f1;
+}
+.ranking-prize_1{
+  flex: 0 0 80rpx;
+  box-sizing: border-box;
+  width: 80rpx;
+  height: 138rpx;
+}
+.ranking-prize_pic{
+  margin-top: 25rpx;
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+}
+.ranking-prize_2{
+  flex: 1;
+  box-sizing: border-box;
+  margin-left: 30rpx;
+  margin-top: 25rpx;
+  margin-bottom: 25rpx;
+  height: 88rpx; 
+  line-height: 40rpx;
+  color: #4c4c4c;
+}
+.ranking-prize-name{
+  display: inline-block;
+  max-width:160rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+}
+.ranking-content{
+  position: absolute;
+  bottom: 0rpx;
+  width: 100%;
+  height: 876rpx;
+  border-bottom-left-radius: 26rpx;
+  border-bottom-right-radius: 26rpx; 
+  background-color: white;
+}
+.ranking-scroll{
+  position: absolute;
+  bottom: 0rpx;
+  box-sizing: border-box;
+  width: 100%;
+  height: 876rpx;
+  padding-bottom:36rpx;
+  border-bottom-left-radius: 26rpx;
+  border-bottom-right-radius: 26rpx; 
+  background-color: white;
+  overflow-y:scroll; 
+}
+
+
+.rankingnone{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.rankingnone_pic{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: 227rpx;
+  width: 211rpx;
+  height:202rpx;
+}
+.rankingnone_text{
+  width: 100%;
+  position: absolute;
+  top: 438rpx;
+  font-size: 32rpx;
+  color:#919191;
+  text-align: center;
+}
+
+
+/* 底部按钮样式 */
+.btnclas{
+  display: flex;
+  position: fixed;
+  bottom: 0rpx;
+  width: 100%;
+  height: 74rpx;
+  z-index: 20;
+}
+.btnclas_1{
+  flex: 1;
+  height: 74rpx;
+  line-height: 74rpx;
+  font-size: 30rpx;
+  color:white;
+  text-align: center;
+  border-top-left-radius: 10rpx;
+}
+.btnclas_2{
+  flex: 1;
+  height: 74rpx;
+  line-height: 74rpx;
+  font-size: 30rpx;
+  color:white;
+  text-align: center;
+}
+.btnclas_3{
+  flex: 1;
+  height: 74rpx;
+  line-height: 74rpx;
+  font-size: 30rpx;
+  color:white;
+  text-align: center;
+  border-top-right-radius: 10rpx;
+}
+.primary{
+  background-color: rgba(0,0,0,0.1);
+}
+
+
+
+
+/* 活动已结束 */
+.containerend{
+  position: absolute;
+  padding: 0rpx;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, #fc3f56 , #ff6f4a);
+}
+.endbg{
+  position: absolute;
+  top: 0rpx;
+  width: 100%;
+  height: 1192rpx;
+}
+end-component{
+  width: 100%;
+  height: 100%;
+}
+
+
+/* 跑马灯 */
+.lamp{
+  position: fixed;
+  bottom: 74rpx;
+  width: 100%;
+  height: 70rpx;
+  overflow: hidden;
+  color: white;
+  font-size: 27rpx;
+  background-color: rgba(0,0,0,0.4);
+  z-index: 20;
+}
+.lamp-content{
+  position: absolute;
+  animation-name:lampmove;
+  animation-duration: var(--marqueeTime--);
+  animation-iteration-count: infinite;
+  animation-timing-function:linear;
+  white-space: nowrap;
+  line-height: 70rpx;
+}
+@keyframes lampmove{
+  from {
+    left: 100%;
+  }
+  to {
+    left: var(--marqueeWidth--);
+  }
+}

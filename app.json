@@ -1,0 +1,14 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/G550A/G550A",
+    "pages/main/main",
+    "pages/Map/map"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "读书郎教育科技",
+    "navigationBarTextStyle": "black"
+  }
+}
