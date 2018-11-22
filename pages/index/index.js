@@ -11,70 +11,29 @@ var amapFile = require('../../utils/amap-wx.js');
 Page({
   data: {
     region: ['广东省', '中山市', '五桂山镇'],
-    recommendactivityItem:{
-      "area": [{ "county": "北湖区", "address": "五桂山长命水长逸路38号" }, { "county": "火炬开发区", "address": "广东药科大学中山校区" }, { "county": "天河区", "address": "广东工业大学龙洞校区" }, { "county": "番禺区", "address": "广东工业大学大学城校区" }],
-      "title":"儿童智能手表",
-      "subhead":"福利停不下来",
-      "date":"2018.9.27-2018.10.12",
-      "shareTitle":"【国庆福利】读书郎学生平板G550A免费领",
-      "pic":"../../images/11.png",
-      "joinNum":8000,
-      "status":1
-    },
-    localactivityItem:[
-      {
-        "area": "五桂山区",
-        "title": "学生平板电脑",
-        "subhead": "福利停不下来",
-        "date": "2018.9.27-2018.10.12",
-        "shareTitle": "【国庆福利】读书郎学生平板G550A免费领",
-        "pic": "../../images/10.png",
-        "joinNum": 7000,
-        "status": 1
-      }, {
-        "area": "石歧区",
-        "title": "学生平板电脑",
-        "subhead": "福利停不下来",
-        "date": "2018.9.27-2018.10.12",
-        "shareTitle": "【国庆福利】读书郎学生平板G550A免费领",
-        "pic": "../../images/10.png",
-        "joinNum": 7000,
-        "status": 0
-      }
-    ],
-    nationwideactivityItem:[
-      {
-        "area": "石歧区",
-        "title": "儿童智能手表",
-        "subhead": "福利停不下来",
-        "date": "2018.9.27-2018.10.12",
-        "shareTitle": "【国庆福利】读书郎学生平板G550A免费领",
-        "pic": "../../images/11.png",
-        "joinNum": 6520,
-        "status": 1
-      }
-    ],
+    activityItem:[],
+    nationwideactivityItem:[],
+    activityDetail:[],
     isModalShow:false,//弹框是否出现
     myAmapFun:{},//高德地图对象
     latitude:0,//本地x坐标
     longitude:0,//本地y坐标
     destination:[],//目的地坐标数组
-    distance:[],//距离数组
-    islocalReflash:false,//本地门店是否刷新
+    distance:[],//最近距离
     isnationwideReflash: false,//全国门店是否刷新
+    canflash:true,//是否可以加载更多
+    page:1,//全国门店当前页数
+    isAuthorization:false,//是否授权
   },
   onLoad: function () {
-    this.setData({
-      query: wx.createSelectorQuery()
-    })
     // address.authorization()
   },
   onShow: function () { 
   },
   onReady: function () {
     var that = this;
-    wx.getLocation({
-      type: 'gcj02', //返回可以用于wx.openLocation的经纬度
+    wx.getLocation({//调出授权窗口
+      type: 'wgs84', 
       success: function (res) {
         that.setData({
           latitude: res.latitude,//纬度
@@ -84,18 +43,50 @@ Page({
         that.setData({
           myAmapFun: new amapFile.AMapWX({ key: '19c282197a346b17749ac00505bff673' })//19c282197a346b17749ac00505bff673
         })
-        that.data.myAmapFun.getRegeo({
+        that.data.myAmapFun.getRegeo({//获取当前位置的名称等信息
           success: function (data) {
             that.setData({
               region: [data[0].regeocodeData.addressComponent.province, data[0].regeocodeData.addressComponent.city, data[0].regeocodeData.addressComponent.township]
+            })
+            request.index(that.data.longitude, that.data.latitude, data[0].regeocodeData.addressComponent.adcode,function(inde){
+              if (inde.code==1){
+                that.setData({
+                  activityItem:inde.data
+                })
+              }
+            })
+            request.activities(that.data.page, that.data.longitude, that.data.latitude, function (nation) {
+              if (nation.code === 1) {
+                if (nation.data.length != 0) {
+                  that.setData({
+                    nationwideactivityItem: nation.data,
+                    page: ++that.data.page
+                  })
+                } else {
+                  that.setData({
+                    canflash: false
+                  })
+                }
+              }
             })
           },
           fail: function (info) {
             wx.showModal({ title: info.errMsg })
           }
         })
+      },
+      fail:function(err){
+        address.authorization(function (res) {
+          if(res.code==1){
+            wx.redirectTo({
+              url: "../index/index"
+            })
+          }
+        });
       }
     })
+
+    
   },
   onPageScroll:function(e){
     if(e.scrollTop<0){
@@ -110,48 +101,65 @@ Page({
     })
   },
   bindRegionChange: function (e) {
-    console.log('picker发送选择改变，携带值为', e.detail.value)
+    var that = this;
+    console.log('picker发送选择改变，携带值为', e.detail.code)
     this.setData({
       region: e.detail.value
+    })
+    address.authorization(function(res){
+      if(res.code==1){
+        wx.redirectTo({
+          url: "../index/index"
+        })
+      }else{
+        request.activity_search(that.data.longitude, that.data.latitude, e.detail.code[1], function (searc) {
+          if (searc.code == 1) {
+            that.setData({
+              activityItem: searc.data
+            })
+          }
+        })
+      }
     })
   },
   //MMZBZ-JQERX-6ZR4O-ZG4TF-35ZGE-5XFBX
 
 
-  show:function(){
+  show:function(e){
     var that=this;
-    var length = this.data.recommendactivityItem.area.length;
-    var addressArr=[];
-    var distanceArr = [];
-    for(var i=0;i<length;i++){
-      this.data.myAmapFun.getInputtips({
-        keywords: that.data.recommendactivityItem.area[i].address,
-        location: '',
-        success: function (data) {
-          if (data && data.tips) {
-            addressArr.push(data.tips[0].location);
-            that.data.myAmapFun.getDrivingRoute({
-              origin: that.data.longitude + "," +that.data.latitude,
-              destination: data.tips[0].location,
-              success: function (res) {
-                distanceArr.push((res.paths[0].distance / 1000).toFixed(2));
-                that.setData({
-                  destination: addressArr,
-                  distance: distanceArr
-                })
-              }
-            })
-          }
+    var pattern = /all/;
+    if (pattern.test(e.target.dataset.store)){
+      this.setData({
+        activityDetail: that.data.nationwideactivityItem[e.target.dataset.store.substring(3)]
+      }, function () {
+        var storeLen = that.data.activityDetail.same_endpoints.length, distances = [];
+        for (var c = 0; c < storeLen; c++) {
+          distances[c] = that.distanceFilter(that.data.activityDetail.same_endpoints[c].lng, that.data.activityDetail.same_endpoints[c].lat)
         }
+        that.setData({
+          distance: distances,
+          isModalShow: true
+        })
+      })
+    }else{
+      this.setData({
+        activityDetail: that.data.activityItem[e.target.dataset.store]
+      },function(){
+        var storeLen = that.data.activityDetail.same_endpoints.length,distances=[];
+        for(var c=0;c<storeLen;c++){
+          distances[c] = that.distanceFilter(that.data.activityDetail.same_endpoints[c].lng, that.data.activityDetail.same_endpoints[c].lat)
+        }
+        that.setData({
+          distance: distances,
+          isModalShow: true
+        })
       })
     }
-    this.setData({
-      isModalShow: true
-    })
   },
   hide:function(){
     this.setData({
-      isModalShow: false
+      isModalShow: false,
+      isAuthorization:false
     })
   },
   hides:function(e){
@@ -160,89 +168,129 @@ Page({
   goMap:function(e){
     // wx.setStorageSync('distance', this.data.destination[e.currentTarget.dataset.index]);
     // console.log(e.currentTarget.dataset.index);
-    wx.setStorage({
-      key: "distance",
-      data: this.data.destination[e.currentTarget.dataset.index],
-      success:function(){
-        wx.navigateTo({
-          url: '../Map/map'
+    var dataIndex = 0;
+    if (e.currentTarget.dataset.index>=0){
+      wx.setStorage({
+        key: "target",
+        data: {
+          lat: this.data.activityDetail.same_endpoints[e.currentTarget.dataset.index].lat,
+          lon: this.data.activityDetail.same_endpoints[e.currentTarget.dataset.index].lng
+        },
+        success: function () {
+          wx.navigateTo({
+            url: '../Map/map'
+          })
+        }
+      })
+    }else{
+      if (/all/.test(e.currentTarget.dataset.store)){
+        wx.setStorage({
+          key: "target",
+          data: {
+            lat: this.data.nationwideactivityItem[e.currentTarget.dataset.store.substring(3)].same_endpoints[0].lat,
+            lon: this.data.nationwideactivityItem[e.currentTarget.dataset.store.substring(3)].same_endpoints[0].lng
+          },
+          success: function () {
+            wx.navigateTo({
+              url: '../Map/map'
+            })
+          }
+        })
+      }else{
+        wx.setStorage({
+          key: "target",
+          data: {
+            lat: this.data.activityItem[e.currentTarget.dataset.store].same_endpoints[0].lat,
+            lon: this.data.activityItem[e.currentTarget.dataset.store].same_endpoints[0].lng
+          },
+          success: function () {
+            wx.navigateTo({
+              url: '../Map/map'
+            })
+          }
         })
       }
-    })
+      
+    }
   },
-  goActivity:function(){
-    wx.navigateTo({
-      url: '../main/main'
-    })
-  },
-  localReflash:function(){
-    var that=this;
-    this.setData({
-      islocalReflash:true
-    })
-    var localactivityItemArr = that.data.localactivityItem;
-    localactivityItemArr.push({
-      "area": "惠城区",
-      "title": "学生平板电脑",
-      "subhead": "福利停不下来",
-      "date": "2018.9.27-2018.10.12",
-      "shareTitle": "【国庆福利】读书郎学生平板G550A免费领",
-      "pic": "../../images/10.png",
-      "joinNum": 7000,
-      "status": 1
-    }, {
-        "area": "傻逼区",
-        "title": "学生平板电脑",
-        "subhead": "福利停不下来",
-        "date": "2018.9.27-2018.10.12",
-        "shareTitle": "【国庆福利】读书郎学生平板G550A免费领",
-        "pic": "../../images/10.png",
-        "joinNum": 7000,
-        "status": 0
+  goActivity:function(e){
+    var that = this;
+    if (wx.getStorageSync('userInfo')){
+      wx.setStorage({
+        key: 'activity_id',
+        data: e.currentTarget.dataset.activity,
+        success: function (res) {
+          wx.navigateTo({
+            url: '../main/main'
+          })
+        }
       })
-    setTimeout(function(){
-      that.setData({
-        islocalReflash: false
-      },function(){
-        that.setData({
-          localactivityItem: localactivityItemArr
-        })
+    }else{
+      this.setData({
+        isAuthorization: true
       })
-    },1000);
+      wx.setStorage({
+        key: 'activity_id',
+        data: e.currentTarget.dataset.activity
+      })
+    }
   },
   nationwideReflash:function(){
     var that = this;
     this.setData({
       isnationwideReflash: true
     })
-    var nationwideactivityItemArr = that.data.nationwideactivityItem;
-    nationwideactivityItemArr.push({
-      "area": "惠城区",
-      "title": "学生平板电脑",
-      "subhead": "福利停不下来",
-      "date": "2018.9.27-2018.10.12",
-      "shareTitle": "【国庆福利】读书郎学生平板G550A免费领",
-      "pic": "../../images/10.png",
-      "joinNum": 7000,
-      "status": 1
-    }, {
-        "area": "傻逼区",
-        "title": "学生平板电脑",
-        "subhead": "福利停不下来",
-        "date": "2018.9.27-2018.10.12",
-        "shareTitle": "【国庆福利】读书郎学生平板G550A免费领",
-        "pic": "../../images/10.png",
-        "joinNum": 7000,
-        "status": 0
+    
+    request.activities(this.data.page, that.data.longitude, that.data.latitude, function (nation) {
+      if (nation.code === 1) {
+        if (nation.data.length != 0) {
+          var nationwideactivityItemArr = that.data.nationwideactivityItem;
+          that.setData({
+            nationwideactivityItem: nationwideactivityItemArr.concat(nation.data),
+            isnationwideReflash: false,
+            page: ++that.data.page,
+          })
+        } else {
+          that.setData({
+            canflash: false
+          })
+        }
+      }
+    })
+  },
+  bindGetUserInfo: function (e) {
+    var that =this;
+    if (e.detail.iv) {
+      wx.getUserInfo({
+        success: function (res) {
+          wx.setStorage({
+            key: 'userInfo',
+            data: res.userInfo,
+            success:function(){
+              that.setData({
+                isAuthorization: false
+              })
+              wx.navigateTo({
+                url: '../main/main'
+              })
+            }
+          });
+        }
       })
-    setTimeout(function () {
-      that.setData({
-        isnationwideReflash: false
-      }, function () {
-        that.setData({
-          nationwideactivityItem: nationwideactivityItemArr
-        })
-      })
-    }, 1000);
+    }else{
+      
+    }
+  },
+  distanceFilter: function (lng2, lat2){
+    var lng1 = wx.getStorageSync("local").split(",")[0];
+    var lat1 = wx.getStorageSync("local").split(",")[1];
+    var radLat1 = lat1 * Math.PI / 180.0;
+    var radLat2 = lat2 * Math.PI / 180.0;
+    var a = radLat1 - radLat2;
+    var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
+    var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+    s = s * 6378137.0; // 取WGS84标准参考椭球中的地球长半径(单位:m)
+    s = Math.round(s * 10000) / 10000;
+    return (s/1000).toFixed(2);
   }
 })

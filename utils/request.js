@@ -25,7 +25,7 @@ function postPromise(path, data, success) {
       url: host + path,
       data: data,
       header: header,
-      method: 'POST',
+      method: "POST",
       success: (res) => {
         wx.hideLoading()
         if (res.statusCode === 200) {
@@ -103,7 +103,7 @@ function login() {
   })
 }
 
-function index(callback) {
+function player(activity_id,callback) {
   // 使用缓存
   // var cache = wx.getStorageSync('home_cache')
   // if (cache && Date.now() < cache.timestamp + 1000000){
@@ -115,11 +115,12 @@ function index(callback) {
   return Promise.all([login(), getUserInfo()]).then((value) => {
     var postData = {
       nickname: value[1].nickname,
-      avatar: value[1].avatar
+      avatar: value[1].avatar,
+      activity_id: activity_id
     };
     if (value[0].key === 'openid') postData.openid = value[0].value;
     else postData.code = value[0].value;
-    return postPromise('api/index', makeSn(postData), (res) => {
+    return postPromise('api/player', makeSn(postData), (res) => {
       typeof (callback) === 'function' && callback(res)
       if (res.code == 1) {
         wx.setStorage({
@@ -136,7 +137,7 @@ function index(callback) {
   })
 }
 
-function invitation(oid, callback) {
+function invitation(activity_id, oid, callback) {
   // var cache = wx.getStorageSync(oid);
   // if (cache && Date.now() < cache.timestamp + 100000){
   //   return new Promise((a,b)=>{
@@ -148,7 +149,8 @@ function invitation(oid, callback) {
     var postData = {
       my_openid: oid,
       friend_nickname: value[1].nickname,
-      friend_avatar: value[1].avatar
+      friend_avatar: value[1].avatar,
+      activity_id: activity_id
     }
     if (value[0].key === 'openid') postData.friend_openid = value[0].value;
     else postData.friend_code = value[0].value;
@@ -169,18 +171,19 @@ function invitation(oid, callback) {
   })
 }
 
-function my_roll(nickname, avatar ,callback) {
+function player_roll(activity_id, nickname, avatar ,callback) {
   return login().then(login => {
     var postData = {}
     if (login.key === 'openid') postData.openid = login.value;
     else postData.code = login.value;
+    postData.activity_id = activity_id;
     postData.nickname=nickname;
     postData.avatar=avatar;
-    return postPromise('api/my_roll', makeSn(postData), callback);
+    return postPromise('api/player_roll', makeSn(postData), callback);
   })
 }
 
-function friend_roll(oid, callback) {
+function helper_roll(activity_id, oid, callback) {
   // var cache = wx.getStorageSync('friend_roll_cache');
   // var oidcache = wx.getStorageSync('oid_cache');
   // if (oidcache&&oidcache == oid){
@@ -200,11 +203,12 @@ function friend_roll(oid, callback) {
   
   return login().then(value => {
     var postData = {
-      my_openid: oid
+      my_openid: oid,
+      activity_id: activity_id
     }
     if (value.key === 'openid') postData.friend_openid = value.value;
     else postData.friend_code = value.value;
-    return postPromise('api/friend_roll', makeSn(postData), res => {
+    return postPromise('api/helper_roll', makeSn(postData), res => {
       console.log(postData);
       console.log(res.code+"  "+res.message);
       typeof callback === "function" && callback(res);
@@ -222,7 +226,7 @@ function friend_roll(oid, callback) {
   })
 }
 
-function win_list(callback) {
+function win_list(activity_id, callback) {
   // 使用缓存
   // var cache = wx.getStorageSync('winlist_cache')
   // if (cache && Date.now() < cache.cache_time + 1000000) {
@@ -231,7 +235,9 @@ function win_list(callback) {
   //     a(cache);
   //   })
   // }
-  return postPromise('api/win_list', makeSn({}), res => {
+  var postData = {}
+  postData.activity_id = activity_id;
+  return postPromise('api/win_list', makeSn(postData), res => {
     typeof (callback) === 'function' && callback(res);
     if (res.code == 1) {
       res.timestamp = Date.now();
@@ -243,7 +249,7 @@ function win_list(callback) {
   });
 }
 
-function winners(callback) {
+function winners(activity_id, callback) {
   // 使用缓存
   // var cache = wx.getStorageSync('winners_cache');
   // if (cache && cache.Date.now() < cache_time + 1000000) {
@@ -252,7 +258,9 @@ function winners(callback) {
   //     a(cache);
   //   })
   // }
-  return postPromise('api/winners', makeSn({}), res => {
+  var postData = {}
+  postData.activity_id = activity_id;
+  return postPromise('api/winners', makeSn(postData), res => {
     typeof (callback) === 'function' && callback(res);
     if (res.code == 1) {
       res.timestamp = Date.now()
@@ -272,7 +280,7 @@ function take_prize(postData, callback) {
   })
 }
 
-function get_chance(callback) {
+function get_chance(activity_id, callback) {
   // var cache = wx.getStorageSync('get_chance_cache');
   // if (cache && Date.now() < new Date(new Date(new Date().setDate(new Date(cache.time).getDate() + 1)).toLocaleDateString()).getTime()){
   //   return new Promise((a, b) => {
@@ -282,6 +290,7 @@ function get_chance(callback) {
   // }
   return login().then(login => {
     var postData = {};
+    postData.activity_id = activity_id;
     if (login.key === 'openid') postData.openid = login.value;
     else postData.code = login.value;
     return postPromise('api/get_chance', makeSn(postData), res =>{
@@ -300,11 +309,56 @@ function get_chance(callback) {
   })
 }
 
-module.exports.index = index;
+function index(lng, lat, city,callback){
+  var postData = {};
+  postData.lng = lng;
+  postData.lat = lat;
+  postData.city = city;
+  return postPromise("api/index", makeSn(postData),res =>{
+    typeof callback === "function" && callback(res)
+  })
+}
+ 
+function activities(page, lng, lat,callback){
+  var postData = {};
+  postData.page = page;
+  postData.lng = lng;
+  postData.lat = lat;
+  return postPromise("api/activities", makeSn(postData), res => {
+    typeof callback === "function" && callback(res)
+  })
+}
+
+function activity_search(lng, lat, city,callback){
+  var postData = {};
+  postData.lng = lng;
+  postData.lat = lat;
+  postData.city = city;
+  return postPromise("api/activity_search", makeSn(postData), res => {
+    typeof callback === "function" && callback(res)
+  })
+}
+
+
+function activity_share(activity_id, callback){
+  var postData = {};
+  postData.activity_id = activity_id;
+  return postPromise("api/activity_share", makeSn(postData), res => {
+    typeof callback === "function" && callback(res)
+  })
+}
+
+
+module.exports.player = player;
 module.exports.invitation = invitation;
-module.exports.my_roll = my_roll;
-module.exports.friend_roll = friend_roll;
+module.exports.player_roll = player_roll;
+module.exports.helper_roll = helper_roll;
 module.exports.win_list = win_list;
 module.exports.winners = winners;
 module.exports.take_prize = take_prize;
 module.exports.get_chance = get_chance;
+
+module.exports.index = index;
+module.exports.activities = activities;
+module.exports.activity_search = activity_search;
+module.exports.activity_share = activity_share;

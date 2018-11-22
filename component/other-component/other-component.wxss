@@ -1,10 +1,45 @@
 /* component/other-component/other-component.wxss */
 @import "../../public/image.wxss";
+.main_title{
+  margin:auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: 123rpx;
+  z-index: 2;
+  width: 560rpx;
+  font-size: 80rpx;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+}
+.sub_title{
+  position: absolute;
+  left: 214rpx;
+  top: 364rpx;
+  z-index: 2;
+  width: 370rpx;
+  font-size: 60rpx;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+}
+.cover_link{
+  margin:auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: 509rpx;
+  z-index: 2;
+  width: 582rpx;
+  height: 343rpx;
+}
+
 .other-content{
   margin-top: 958rpx;
   padding-bottom: 88rpx;
   width: 100%;
-  background-color: #ff350a;
+  background-color: #fc4056;
   overflow: hidden;
 }
 .nowin{

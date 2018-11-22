@@ -18,6 +18,7 @@ Component({
     avatarUrl:"",
     modal:[false,false,false],//0、看视频砍价弹框，1、砍价弹框，2、兑奖弹框
     friend_help: [],
+    prize_price: 0,//奖品价格
     originmuch:0,//已砍钱数
     howmuch: 0,//砍了多少钱
     originWidth:560,//原始宽度
@@ -27,17 +28,24 @@ Component({
     animationDatas:{},
     isCut:1,//剩下的砍价次数
     isAmiantion:false,//是否运动
-    isPlay:false,//当天是否播放视频
-    noPlay:false,
     ranking: 0,//排名
     noconvert: false,//是否兑换
     isconvert: false,//是否兑换
+    activity_id: "",//活动的id
+    main_title:"",
+    sub_title:"",
+    cover_link:"",
+    prize_setting:[],//奖品列表
+    prize_level:0,
   },
   ready:function(){
     var that = this;
     //此处调用接口初始化数据
+    that.setData({
+      activity_id: wx.getStorageSync('activity_id')
+    })
     if (wx.getStorageSync('userInfo').nickName) {
-      request.index(function(res){
+      request.player(that.data.activity_id, function(res){
         if(res.code==1){
           that.setData({
             nickName: wx.getStorageSync("userInfo").nickName,
@@ -45,14 +53,33 @@ Component({
             isLogin: true,
             isCut:res.chance,
             isWin: (res.position!=0),
-            originWidth: ((3698-res.money) / 3698) * 560,
+            prize_price: res.prize_price,
+            originWidth: ((res.prize_price - res.money) / res.prize_price) * 560,
             originmuch: res.money,
             friend_help: res.help_list,
             ranking:res.position,
             noconvert: !res.prize_received,
             isconvert: res.prize_received,
+            main_title: res.main_title,
+            sub_title:res.sub_title,
+            cover_link: res.cover_link,
+            prize_setting: res.prize_setting,
           })
-          that.triggerEvent('myevent', { isWin: that.data.isWin });
+          var po = 0, leng = res.prize_setting.length,level=0;
+          if (res.position != 0){
+            for (var l = 0; l < leng;l++){
+              if (res.position > po){
+                po = po + res.prize_setting[l].amount;
+              }else{
+                level = l-1;
+                break;
+              }
+            }
+            that.setData({
+              prize_level: level
+            })
+          }
+          that.triggerEvent('myevent', { isWin: that.data.isWin, introduction: res.introduction.replace(/\<br\>/g, "\n"), prize_price: res.prize_price});
         }else{
           that.setData({
             isLogin:false
@@ -85,7 +112,7 @@ Component({
     cut:function(){
       var that=this;
       if(this.data.isCut>0){
-        request.my_roll(wx.getStorageSync('userInfo').nickName, wx.getStorageSync('userInfo').avatarUrl,function(res){
+        request.player_roll(that.data.activity_id, wx.getStorageSync('userInfo').nickName, wx.getStorageSync('userInfo').avatarUrl,function(res){
           if(res.code==1){
             if(res.position==0){
               that.setData({
@@ -113,6 +140,7 @@ Component({
           }
         })
       }
+      console.log(this.properties.obj);
     },
     closeModal:function(e){
       var that=this;
@@ -122,13 +150,12 @@ Component({
           isPlay: false,
           noPlay:false,
         });
-        this.triggerEvent('myevent', { isVideo: true });
       }else{
         this.setData({
           "modal[1]": false,
           isAmiantion: false
         },function(){
-          var percent = 1-(that.data.howmuch + that.data.originmuch) / 3698;
+          var percent = 1-(that.data.howmuch + that.data.originmuch) / that.data.prize_price;
           that.setData({
             width: percent * 560,
             isCut: --that.data.isCut
@@ -154,7 +181,7 @@ Component({
       var that=this;
       //此处调用接口初始化数据
       if (e.detail.iv){
-        request.index(function (res) {
+        request.player(that.data.activity_id,function (res) {
           if (res.code == 1) {
             that.setData({
               nickName: wx.getStorageSync("userInfo").nickName,
@@ -162,15 +189,34 @@ Component({
               isLogin: true,
               isCut: res.chance,
               isWin: (res.position != 0),
-              originWidth: ((3698 - res.money) / 3698) * 560,
+              prize_price: res.prize_price,
+              originWidth: ((res.prize_price - res.money) / res.prize_price) * 560,
               originmuch: res.money,
               friend_help: res.help_list,
               ranking: res.position,
               noconvert: !res.prize_received,
               isconvert: res.prize_received,
+              main_title: res.main_title,
+              sub_title: res.sub_title,
+              cover_link: res.cover_link,
+              prize_setting: res.prize_setting,
             }, function () {
+              var po = 0, leng = res.prize_setting.length, level = 0;
+              if (res.position != 0) {
+                for (var l = 0; l < leng; l++) {
+                  if (res.position > po) {
+                    po = po + res.prize_setting[l].amount;
+                  } else {
+                    level = l - 1;
+                    break;
+                  }
+                }
+                that.setData({
+                  prize_level: level
+                })
+              }
               that.triggerEvent('myevent', { isLogin: true });
-              that.triggerEvent('myevent', { isWin: that.data.isWin });
+              that.triggerEvent('myevent', { isWin: that.data.isWin, introduction: res.introduction.replace(/\<br\>/g, "\n"), prize_price: res.prize_price});
               if (e.currentTarget.dataset.index == 0 && (res.position == 0)) {
                 that.cut();
               }
@@ -186,7 +232,6 @@ Component({
       }
     },
     saveModal: function () {
-      this.triggerEvent('myevent', { isVideo: false });
       this.setData({
         "modal[2]":true
       })
@@ -211,14 +256,13 @@ Component({
           content: "信息是否填写正确？",
           success: function (show) {
             if (show.confirm) {
-              request.take_prize({ phone_number: e.detail.value.tel, name: e.detail.value.name, address: e.detail.value.address }, function (res) {
+              request.take_prize({ activity_id:that.data.activity_id, phone_number: e.detail.value.tel, name: e.detail.value.name, address: e.detail.value.address }, function (res) {
                 if (res.code == 1) {
                   that.setData({
                     noconvert: false,
                     isconvert: true,
                     "modal[2]": false
                   })
-                  that.triggerEvent('myevent', { isVideo: true });
                 } else {
                   wx.showModal({
                     title: "提交失败",

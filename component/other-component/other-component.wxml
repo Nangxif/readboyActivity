@@ -1,24 +1,28 @@
 <!--component/other-component/other-component.wxml-->
+<view class='main_title'>{{main_title}}</view>
+<view class='sub_title'>{{sub_title}}</view>
+<image class='cover_link' src='{{cover_link}}'></image>
+
+
 <view class='other-content'>
   <view class='nowin' wx:if="{{!isWin}}">
     <image src='{{avatarUrl}}' class='avtar'></image>
     <view class='infoName'>{{nickName}}</view>
     <view class='percent'>
-      <view class='percent_tip tip_base' style="left:{{(originWidth-64)+'rpx'}}" animation="{{!isAmiantion?animationData1:animationDatas}}"><view class='percent_tip_text'>{{3698-originmuch}}元</view></view>
+      <view class='percent_tip tip_base' style="left:{{(originWidth-64)+'rpx'}}" animation="{{!isAmiantion?animationData1:animationDatas}}"><view class='percent_tip_text'>{{prize_price-originmuch}}元</view></view>
       <view class='percent100 percentcurrent' style='width:{{originWidth+"rpx"}}' animation="{{!isAmiantion?animationData:animationDatas}}"></view>
       <image src='../../images/percent0.png' class='percent0'></image>
     </view>
     <view class='percentleft'>￥0</view>
-    <view class='percentright'>￥3698</view>
+    <view class='percentright'>￥{{prize_price}}</view>
     <view class='selfinfo' wx:if="{{!isWin}}">
-      <view class='info'>已经砍下<view class='infoPirce'>{{originmuch}}</view>元，还差<view class='infoPirce'>{{3698-originmuch}}</view>元</view>
+      <view class='info'>已经砍下<view class='infoPirce'>{{originmuch}}</view>元，还差<view class='infoPirce'>{{prize_price-originmuch}}</view>元</view>
     </view>
   </view>
   <view class='win' wx:if="{{isWin}}"><!--兑奖之后的界面-->
     <view class='win-title'>中奖啦</view>
-    <image src='../../images/pad.png' class='Winicon' wx:if="{{ranking<=10&&ranking>0}}"></image>
-    <image src='../../images/200.png' class='Winicons' wx:if="{{ranking>10}}"></image>
-    <view class='win-content'>恭喜您获得{{ranking>10?"200元优惠券":"G550A一台"}}</view>
+    <image src='{{prize_setting[prize_level].pic_link}}' class='Winicon'></image>
+    <view class='win-content'>恭喜您获得{{prize_setting[prize_level].name}}</view>
   </view>
 
   <view class='btns' wx:if="{{isLogin&&!isWin}}"><!--已登录时按钮-->
@@ -72,3 +76,5 @@
 
 <!-- toast弹框 -->
 <cover-view style="{{toast?'display:block;':'display:none;'}}" class='toast'>砍价次数已达上限</cover-view>
+
+

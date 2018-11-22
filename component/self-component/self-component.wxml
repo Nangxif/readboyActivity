@@ -1,28 +1,32 @@
 <!--component/self-component/self-component.wxml-->
+<view class='main_title'>{{main_title}}</view>
+<view class='sub_title'>{{sub_title}}</view>
+<image class='cover_link' src='{{cover_link}}'></image>
+
+
 <view class='self-content'>
   <view class='nowin' wx:if="{{!isWin}}">
     <image src='{{isLogin?avatarUrl:""}}' class='avtar'></image>
     <view class='infoName'>{{nickName}}</view>
     <view class='percent'>
-      <view class='percent_tip tip_base' style="left:{{(originWidth-64)+'rpx'}}" animation="{{!isAmiantion?animationData1:animationDatas}}"><view class='percent_tip_text'>{{3698-originmuch}}元</view></view>
+      <view class='percent_tip tip_base' style="left:{{(originWidth-64)+'rpx'}}" animation="{{!isAmiantion?animationData1:animationDatas}}"><view class='percent_tip_text'>{{prize_price-originmuch}}元</view></view>
       <view class='percent100 percentcurrent' style='width:{{originWidth+"rpx"}}' animation="{{!isAmiantion?animationData:animationDatas}}"></view>
       <image src='../../images/percent0.png' class='percent0'></image>
     </view>
     <view class='percentleft'>￥0</view>
-    <view class='percentright'>￥3698</view>
+    <view class='percentright'>￥{{prize_price}}</view>
     <view class='selfinfo' wx:if="{{!isWin}}">
-      <view class='info'>已经砍下<view class='infoPirce'>{{originmuch}}</view>元，还差<view class='infoPirce'>{{3698-originmuch}}</view>元</view>
+      <view class='info'>已经砍下<view class='infoPirce'>{{originmuch}}</view>元，还差<view class='infoPirce'>{{prize_price-originmuch}}</view>元</view>
     </view>
   </view>
   <view class='win' wx:if="{{isLogin&&isWin&&isconvert}}"><!--兑奖之后的界面-->
     <view class='win-title'>中奖啦</view>
     <image src='../../images/pad.png' class='Winicon' wx:if="{{ranking<=10&&ranking>0}}"></image>
     <image src='../../images/200.png' class='Winicons' wx:if="{{ranking>10}}"></image>
-    <view class='win-content'>恭喜您获得{{ranking>10?"200元优惠券":"G550A一台"}}</view>
+    <view class='win-content'>恭喜您获得{{prize_setting[prize_level].name}}</view>
   </view>
   <view class='selfinfos' wx:if="{{isLogin&&isWin&&noconvert}}"><!--获奖但是还没兑奖的界面-->
-    <view class='wininfo'>恭喜你，获得读书郎学生平板</view>
-    <view class='wininfo'>{{ranking>10?"200元优惠券":"G550A一台"}}</view>
+    <view class='wininfo'>恭喜你，获得{{prize_setting[prize_level].name}}</view>
   </view>
 
   <view class='btns' wx:if="{{isLogin&&!isWin}}"><!--已登录时按钮-->
@@ -96,7 +100,7 @@
 
   <!-- 兑奖弹框 -->
 <view class='WinModal' wx:if="{{modal[2]}}">
-  <view class='WinModalContentpad win-bg' wx:if="{{ranking<=10}}"><!--当排名为前10时-->
+  <view class='WinModalContentpad win-bg' wx:if="{{prize_level==0}}"><!--当排名为前10时-->
     <view class='WinpadModalCloseview' bindtap='closeModal' data-out='2'>
       <image class='WinpadModalClose' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAdCAMAAABhTZc9AAAAOVBMVEUAAAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VACj17o6AAAAEnRSTlMA6i4B3Zh6HfWwpYXzcUFALQZdzogUAAAAeUlEQVQoz23PSwqEQBRD0VRVa2vbP9/+FyuIeAdJpgcCV/vausLGtPyktepkw6rlq0ddbFg16wk7Cg4IZ4QdnUFn0DkiDCZ+gYFBZ9A3ztt3NyCF7oANdpzv7oQSHBCOCDs6g4lBZzAymLiBxpv+7ULnaUj9I0Xehg6rUA9sSOntiwAAAABJRU5ErkJggg=='></image>
     </view>
@@ -106,9 +110,9 @@
       <image src='../../images/orangeright.png' class='padright'></image>
     </view>
     <view class='pad'>
-      <image src='../../images/pad.png' class='Winpadicon'></image>
+      <image src='{{prize_setting[prize_level].pic_link}}' class='Winpadicon'></image>
       <view class='WinpadText'>
-      恭喜你获得学生平板G550A一台
+      恭喜你获得{{prize_setting[prize_level].name}}
       </view>
     </view>
     <form class='Winpad-bottom' bindsubmit='save'>
@@ -128,13 +132,13 @@
         <input type="text" id='address' class='Winpad-input_2' placeholder='请输入邮寄地址' name="address"/>
       </view>    
       <view class='Winpad-input'>
-        <view class='Winpad-input-foot'>学生平板G550A以邮寄方式兑换，如不填写，活动结束默认放弃领奖</view>
+        <view class='Winpad-input-foot'>{{prize_setting[prize_level].name}}以邮寄方式兑换，如不填写，活动结束默认放弃领奖</view>
       </view>
       <button class='Winpad-bottom-btn' data-out='4' form-type='submit'>保存</button>
     </form>
   </view>
 
-  <view class='WinModalContentticket win-bg' wx:if="{{ranking>10}}"><!--当排名为11之后时-->
+  <view class='WinModalContentticket win-bg' wx:if="{{prize_level!=0}}"><!--当排名为11之后时-->
     <view class='WinticketModalCloseview' bindtap='closeModal' data-out='2'>
       <image class='WinticketModalClose' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAdCAMAAABhTZc9AAAAOVBMVEUAAAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VACj17o6AAAAEnRSTlMA6i4B3Zh6HfWwpYXzcUFALQZdzogUAAAAeUlEQVQoz23PSwqEQBRD0VRVa2vbP9/+FyuIeAdJpgcCV/vausLGtPyktepkw6rlq0ddbFg16wk7Cg4IZ4QdnUFn0DkiDCZ+gYFBZ9A3ztt3NyCF7oANdpzv7oQSHBCOCDs6g4lBZzAymLiBxpv+7ULnaUj9I0Xehg6rUA9sSOntiwAAAABJRU5ErkJggg=='></image>
     </view>
@@ -144,8 +148,8 @@
       <image src='../../images/orangeright.png' class='ticketright'></image>
     </view>
     <view class='ticket'>
-      <image src='../../images/200.png' class='Winticketicon'></image>
-      <view class='WinticketText'>恭喜您获得学生平板200元优惠券一张</view>
+      <image src='{{prize_setting[prize_level].pic_link}}' class='Winticketicon'></image>
+      <view class='WinticketText'>恭喜您获得{{prize_setting[prize_level].name}}</view>
     </view>
     <form class='Winticket-bottom' bindsubmit='save'>
       <view class='Winticket-input'>

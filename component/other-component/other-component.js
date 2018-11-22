@@ -30,7 +30,12 @@ Component({
     cacheCut:1,//在还没确定是否已经授权的时候，将剩余砍价次数赋值给cacheCut
     ranking: 0,//排名
     hasCutChance:true,
-    toast:false
+    toast: false,
+    main_title: "",
+    sub_title: "",
+    cover_link: "",
+    prize_setting: [],//奖品列表
+    prize_level: 0
   },
   ready: function () {
     var that=this;
@@ -51,22 +56,44 @@ Component({
       nickName: app.globalData.firend_nickName,
       avatarUrl: app.globalData.firend_avatarUrl,
     })
-    request.invitation(app.globalData.friend_openid).then(res => {
+    request.invitation(app.globalData.activity_id,app.globalData.friend_openid).then(res => {
       if (res.code == 1) {
-        this.setData({
-          isWin: (res.position!=0),
-          originWidth: ((3698 - res.money) / 3698) * 560,
+        that.setData({
+          isWin: (res.position != 0),
+          prize_price: res.prize_price,
+          originWidth: ((res.prize_price - res.money) / res.prize_price) * 560,
           originmuch: res.money,
           friend_help: res.help_list,
           ranking: res.position,
           cacheCut: res.can_help,
+          main_title: res.main_title,
+          sub_title: res.sub_title,
+          cover_link: res.cover_link,
+          main_title: res.main_title,
+          sub_title: res.sub_title,
+          cover_link: res.cover_link,
+          prize_setting: res.prize_setting,
         },function(){
-          that.triggerEvent('myevent', { isWin: that.data.isWin });
+          var po = 0, leng = res.prize_setting.length, level = 0;
+          if (res.position != 0) {
+            for (var l = 0; l < leng; l++) {
+              if (res.position > po) {
+                po = po + res.prize_setting[l].amount;
+              } else {
+                level = l - 1;
+                break;
+              }
+            }
+            that.setData({
+              prize_level: level
+            })
+          }
+          that.triggerEvent('myevent', { isWin: that.data.isWin,introduction: res.introduction.replace(/\<br\>/g, "\n"), prize_price: res.prize_price });
         })
         if (wx.getStorageSync("userInfo")) {
           that.setData({
             isCut: res.can_help,
-            isLogin: true,
+            isLogin: true
           })
           if (res.can_help == -1 || res.can_help == -2){
             that.setData({
@@ -96,7 +123,7 @@ Component({
     cut: function () {
       var that = this;
       if (this.data.isCut > 0){
-        request.friend_roll(app.globalData.friend_openid).then(res => {
+        request.helper_roll(app.globalData.activity_id,app.globalData.friend_openid).then(res => {
           if (res.code == 1) {
             that.setData({
               hasCutChance: true,
@@ -113,13 +140,11 @@ Component({
               that.setData({
                 isWin: true
               })
-              that.triggerEvent('myevent', { isWin: true });
             }
           } else if (res.code == 2) {
             that.setData({
               isWin: true
             })
-            that.triggerEvent('myevent', { isWin: true });
           } else {
             that.setData({
               "modal[1]": true
@@ -133,19 +158,16 @@ Component({
       if (e.currentTarget.dataset.out != 1) {
         this.setData({
           ["modal[" + e.currentTarget.dataset.out + "]"]: false
-        }, function () {
-          this.triggerEvent('myevent', { isVideo: true });
         });
       } else {
         this.setData({
           "modal[1]": false,
           isAmiantion: false,
         }, function () {
-          var percent = 1 - (that.data.howmuch + that.data.originmuch) / 3698;
+          var percent = 1 - (that.data.howmuch + that.data.originmuch) / that.data.prize_price;
           that.setData({
             width: percent * 560
           })
-          this.triggerEvent('myevent', { isVideo: true });
           //点击砍价之后进度条动画
           this.animation.width(that.data.width + "rpx").step();
           that.setData({
@@ -162,6 +184,14 @@ Component({
           })
         })
       }
+    },
+    hide: function () {
+      this.setData({
+        isAuthorization: false
+      })
+    },
+    hides: function (e) {
+      return false;
     },
     bindGetUserInfo: function (e) {
       var that = this;
@@ -190,7 +220,7 @@ Component({
       delete app.globalData.firend_nickName;
       delete app.globalData.firend_avatarUrl;
       wx.redirectTo({
-        url: 'index',
+        url: 'main',
       })
     }
   }

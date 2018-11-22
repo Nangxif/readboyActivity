@@ -1,15 +1,17 @@
+<wxs src="../../utils/filter.wxs" module="filter" />
 <view class="section">
+  <view class='section-ico'><view class='address-icon'></view></view>  
   <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}" class='section-picker'>
     <view class="picker">
-      <view class='picker-name'>{{region[1]}}{{region[2]}}</view><view class='picker-icon'>></view>
+      <view class='picker-name'>{{region[0]}}{{region[1]}}{{region[2]}}</view><view class='picker-icon'>></view>
     </view>
   </picker>
-  <form class='section-keywordForm'>
+  <!-- <form class='section-keywordForm'>
     <view class='section-search'>
-      <icon type='search' size="16" class='section-icon'></icon>
       <input placeholder="请输入关键字" class='keyword'/>
+      <icon type='search' size="16" color="black" class='section-icon'></icon>
     </view>
-  </form>
+  </form> -->
 </view>
 
 
@@ -17,80 +19,84 @@
 
 
 <!-- 推荐门店 -->
-<view class='item'>
-  <view class='item-title' id='recommend'>推荐门店</view>
+<view class='item' wx:if="{{activityItem.length!=0}}">
+  <view class='item-title' id='recommend'>推荐活动</view>
   <view class='item-content'>
     <view class='item-preview'>
-      <image src='../../images/public.png' class="item-img" bindtap='goActivity'></image>
-      <view class='item-area'>{{recommendactivityItem.area[0].county}}</view>
-      <view class='item-t'>{{recommendactivityItem.title}}</view>
-      <view class='item-ft'>{{recommendactivityItem.subhead}}</view>
-      <view class='item-time'>活动时间：{{recommendactivityItem.date}}</view>
-      <view class='item-prize'><image src='{{recommendactivityItem.pic}}'></image></view>
-      <view class='activity-end' wx:if="{{recommendactivityItem.status==0}}"><view class='activity-end-text'>已结束</view></view>
+      <image src='../../images/public.png' class="item-img"></image>
+      <view class='item-area'>{{activityItem[0].district}}</view>
+      <view class='item-t'>{{activityItem[0].main_title}}</view>
+      <view class='item-ft'>{{activityItem[0].sub_title}}</view>
+      <view class='item-time'>活动时间：{{filter.dateFormat(activityItem[0].start_time)}}至{{filter.dateFormat(activityItem[0].end_time)}}</view>
+      <view class='item-prize'><image src='{{activityItem[0].prize_cover}}'></image></view>
     </view>
     <view class='item-detail'>
-      <view class='item-share'>{{recommendactivityItem.shareTitle}}</view>
+      <view class='item-share'>{{activityItem[0].share_title}}</view>
       <view class='item-more'>
-        <view class='item-num'><image src='../../images/12.png' class='item-icon'></image> {{recommendactivityItem.joinNum}}</view>
-        <view class='item-store' bindtap='show'>[{{recommendactivityItem.area.length}}家门店通用]</view>
+        <view class='item-num'><image src='../../images/12.png' class='item-icon'></image> {{activityItem[0].participant_num}}</view>
+        <view class='item-store' bindtap='show' wx:if="{{activityItem[0].same_endpoints.length>1}}" data-store="0">[{{activityItem[0].same_endpoints.length}}家门店通用]</view>
+        <view class='item-store' wx:if="{{activityItem[0].same_endpoints.length==1}}" data-store="0">{{activityItem[0].same_endpoints[0].county}}</view>
       </view>
     </view>
+    <view class='touchModal' bindtap='goActivity' data-activity="{{activityItem[0].activity}}"></view>
   </view>
 </view>
 
 
 
 <!-- 本地门店 -->
-<view class='item'>
-  <view class='item-title' id='local'>本地门店</view>
-  <view class='item-content' wx:for="{{localactivityItem}}">
+<view class='item' wx:if="{{activityItem.length>1}}">
+  <view class='item-title' id='local'>本地活动</view>
+  <view class='item-content' wx:for="{{activityItem}}" wx:if="{{activityItem.length>1&&index>0}}">
     <view class='item-preview'>
-      <image src='../../images/public.png' class="item-img" bindtap='goActivity'></image>
-      <view class='item-area'>{{item.area}}</view>
-      <view class='item-t'>{{item.title}}</view>
-      <view class='item-ft'>{{item.subhead}}</view>
-      <view class='item-time'>活动时间：{{item.date}}</view>
-      <view class='item-prize'><image src='{{item.pic}}'></image></view>
-      <view class='activity-end' wx:if="{{item.status==0}}"><view class='activity-end-text'>已结束</view></view>
+      <image src='../../images/public.png' class="item-img"></image>
+      <view class='item-area'>{{item.district}}</view>
+      <view class='item-t'>{{item.main_title}}</view>
+      <view class='item-ft'>{{item.sub_title}}</view>
+      <view class='item-time'>活动时间：{{filter.dateFormat(item.start_time)}}至{{filter.dateFormat(item.end_time)}}</view>
+      <view class='item-prize'><image src='{{item.prize_cover}}'></image></view>
     </view>
     <view class='item-detail'>
-      <view class='item-share'>{{item.shareTitle}}</view>
+      <view class='item-share'>{{item.share_title}}</view>
       <view class='item-more'>
-        <view class='item-num'><image src='../../images/12.png' class='item-icon'></image> {{item.joinNum}}</view>
-        <view class='item-store'>{{item.area}}</view>
+        <view class='item-num'><image src='../../images/12.png' class='item-icon'></image> {{item.participant_num}}</view>
+        <view class='item-store' bindtap='show' wx:if="{{item.same_endpoints.length>1}}" data-store="{{index}}">[{{item.same_endpoints.length}}家门店通用]</view>
+        <view class='item-store' wx:if="{{item.same_endpoints.length==1}}" bindtap='goMap' data-store="{{index}}">{{item.same_endpoints[0].county}}</view>
       </view>
     </view>
+    <view class='touchModal' bindtap='goActivity' data-activity="{{item.activity}}"></view>
   </view>
-  <view class='localreflash' wx:if="{{!islocalReflash}}" bindtap='localReflash'>点击加载更多</view>
-  <view class='localreflash' wx:if="{{islocalReflash}}"><image src='../../images/loading.gif' class='loading'></image></view>
 </view>
 
 
 
 <!-- 全国门店 -->
 <view class='item'>
-  <view class='item-title' id='nationwide'>全国门店</view>
-  <view class='item-content' wx:for="{{nationwideactivityItem}}">
+  <view class='item-title' id='nationwide'>全国活动</view>
+  <view class='noactivity' wx:if="{{nationwideactivityItem.length<=0}}"><image src='../../images/noactivity.png'></image><view class='noactivity-text'>该地区暂无活动，换个地区试试吧</view></view>
+  <view class='item-content' wx:for="{{nationwideactivityItem}}" wx:if="{{nationwideactivityItem.length>0}}">
     <view class='item-preview'>
-      <image src='../../images/public.png' class="item-img" bindtap='goActivity'></image>
-      <view class='item-area'>{{item.area}}</view>
-      <view class='item-t'>{{item.title}}</view>
-      <view class='item-ft'>{{item.subhead}}</view>
-      <view class='item-time'>活动时间：{{item.date}}</view>
-      <view class='item-prize'><image src='{{item.pic}}'></image></view>
-      <view class='activity-end' wx:if="{{item.status==0}}"><view class='activity-end-text'>已结束</view></view>
+      <image src='../../images/public.png' class="item-img"></image>
+      <view class='item-area'>{{item.district}}</view>
+      <view class='item-t'>{{item.main_title}}</view>
+      <view class='item-ft'>{{item.sub_title}}</view>
+      <view class='item-time'>活动时间：{{filter.dateFormat(item.start_time)}}至{{filter.dateFormat(item.end_time)}}</view>
+      <view class='item-prize'><image src='{{item.prize_cover}}'></image></view>
     </view>
     <view class='item-detail'>
-      <view class='item-share'>{{item.shareTitle}}</view>
+      <view class='item-share'>{{item.share_title}}</view>
       <view class='item-more'>
-        <view class='item-num'><image src='../../images/12.png' class='item-icon'></image> {{item.joinNum}}</view>
-        <view class='item-store'>{{item.area}}</view>
+        <view class='item-num'><image src='../../images/12.png' class='item-icon'></image> {{item.participant_num}}</view>
+
+        <view class='item-store' bindtap='show' wx:if="{{item.same_endpoints.length>1}}" data-store="all{{index}}">[{{item.same_endpoints.length}}家门店通用]</view>
+        <view class='item-store' bindtap='goMap' wx:if="{{item.same_endpoints.length<=1}}" data-store="all{{index}}">{{item.same_endpoints[0].name}}</view>
       </view>
     </view>
+    <view class='touchModal' bindtap='goActivity' data-activity="{{item.activity}}"></view>
   </view>
-  <view class='localreflash' wx:if="{{!isnationwideReflash}}" bindtap='nationwideReflash'>点击加载更多</view>
-  <view class='localreflash' wx:if="{{isnationwideReflash}}"><image src='../../images/loading.gif' class='loading'></image></view>
+  <view class='localreflash' wx:if="{{canflash&&!isnationwideReflash&&nationwideactivityItem.length>0}}" bindtap='nationwideReflash'>点击加载更多</view>
+  <view class='localreflash' wx:if="{{canflash&&isnationwideReflash}}"><image src='../../images/loading.gif' class='loading'></image></view>
+  <view class='localreflash' wx:if="{{!canflash&&nationwideactivityItem.length>0}}">已加载全部数据</view>
 </view>
 
 
@@ -100,19 +106,36 @@
   <view class='modal-content' catchtap='hides'>
     <view class='modal-title'>参与门店</view>
     <view class='modal-store'>
-      <view class='modal-store-item' wx:for="{{recommendactivityItem.area}}" bindtap='goMap' data-index="{{index}}">
-
-        <view class='modal-store-item-1'>
-          <view class='modal-county'>{{item.county}}</view>
-          <view class='modla-distance'>距离：{{distance[index]}}KM</view>
-        </view>
-
-        <view class='modal-store-item-2'>
-        {{item.address}}
-        </view>
-
+      <view class='modal-store-item' wx:for="{{activityDetail.same_endpoints}}" bindtap='goMap' data-index="{{index}}">
+        <!-- <view class='modal-flex-1'> -->
+          <view class='modal-store-item-1'>
+            <view class='modal-county'>{{item.name}}</view>
+            <view class='modla-distance'>距离：{{distance[index]}}KM</view>
+          </view>
+          <view class='modal-store-item-2'>
+          {{item.address}}[点击显示地图]
+          </view>
+        <!-- </view> -->
+        <!-- <view class='modal-flex-2'>></view> -->
       </view>
-
     </view>
   </view>
 </view>
+
+
+
+<!-- 授权窗口 -->
+<view class='authorization_modal' wx:if="{{isAuthorization}}" catchtap='hide'>
+  <view class='authorization' catchtap='hides'>
+    <view class='authorization_title'>
+    微信授权
+    </view>
+    <view class='authorization_content'>
+    读书郎教育科技申请获取你的公开信息（昵称、头像等）
+    </view>
+    <button class='authorization_btn' open-type='getUserInfo' bindgetuserinfo="bindGetUserInfo">
+    下一步
+    </button>
+  </view>
+</view>
+

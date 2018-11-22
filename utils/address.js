@@ -1,4 +1,4 @@
-function authorization(){
+function authorization(callback){
   wx.getSetting({
     success: (res) => {
       if (res.authSetting['scope.userLocation'] != undefined && res.authSetting['scope.userLocation'] != true) {//非初始化进入该页面,且未授权
@@ -21,7 +21,10 @@ function authorization(){
                     wx.showToast({
                       title: '授权成功',
                       icon: 'success',
-                      duration: 1000
+                      duration: 1000,
+                      success:function(){
+                        typeof callback === "function" && callback({ code:1 });
+                      }
                     })
                     //再次授权，调用getLocationt的API
                     // getLocation(that);
@@ -41,7 +44,7 @@ function authorization(){
         // getLocation(that);
       }
       else { //授权后默认加载
-        // getLocation(that);
+        typeof callback === "function" && callback({ code: 2 });
       }
     }
   })

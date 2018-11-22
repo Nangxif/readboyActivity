@@ -38,15 +38,15 @@
 				{
 					"id": 0,
 					"name": "转发模式",
-					"pathName": "pages/index/index",
-					"query": "id=o1VL64hFMqSRTsEM72PcpJZn6T8M&nickName=Robrt&avatarUrl=https%3A%2F%2Fwx.qlogo.cn%2Fmmopen%2Fvi_32%2FaZRjMM52d9X3NFhPiagYBuibCfcPpaiciaiagvWrvFVebh1DAictUNjjhk9bArrt07rzhqne9foNTOaE9J9827mws4Dw%2F132",
+					"pathName": "pages/main/main",
+					"query": "id=o1VL64onsNK_8_uwD-eITQ02GKAw&activity_id=1&nickName=Robrt&avatarUrl=https%3A%2F%2Fwx.qlogo.cn%2Fmmopen%2Fvi_32%2FaZRjMM52d9X3NFhPiagYBuibCfcPpaiciaiagvWrvFVebh1DAictUNjjhk9bArrt07rzhqne9foNTOaE9J9827mws4Dw%2F132",
 					"scene": "1007"
 				},
 				{
 					"id": 1,
-					"name": "鑫转发模式",
-					"pathName": "pages/index/index",
-					"query": "id=o1VL64iOqoI9PyhxCffLBWkKM0SA&nickName=陌&avatarUrl=https://wx.qlogo.cn/mmopen/vi_32/gVdLx91Zf5F2bv6evNbBDKCn1NmE83nIbCSW1GTn6e1s1YBm0nem6sMqgKAqTjV2OXzKTECHdfBXIP9ejmNkQQ/132",
+					"name": "超转发模式",
+					"pathName": "pages/main/main",
+					"query": "id=o1VL64jLrfM-7lIfm6THMeNcf9kY&activity_id=1&nickName=陌&avatarUrl=https://wx.qlogo.cn/mmopen/vi_32/gVdLx91Zf5F2bv6evNbBDKCn1NmE83nIbCSW1GTn6e1s1YBm0nem6sMqgKAqTjV2OXzKTECHdfBXIP9ejmNkQQ/132",
 					"scene": "1007"
 				}
 			]

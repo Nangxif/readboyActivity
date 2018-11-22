@@ -1,4 +1,9 @@
 <!--pages/Map/map.wxml-->
 <view class="map_box">
-  <map id="navi_map" longitude="113.3926" latitude="22.51595" scale="16" markers="{{markers}}" polyline="{{polyline}}"></map>
+  <map id="navi_map" longitude="{{center.longitude}}" latitude="{{center.latitude}}" markers="{{markers}}" polyline="{{polyline}}"></map>
+</view>
+<view class="text_box">
+  <view class="text_box_1">速度最快/推荐</view>
+  <view class="text_box_2">{{duration}}</view>
+  <view class="text_box_3">{{distance}}<view class="tarffic"></view>{{traffic_lights}}</view>
 </view>

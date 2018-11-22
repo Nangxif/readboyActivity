@@ -1,0 +1,12 @@
+// filter.wxs
+var dateFormat = function (date) {
+  var dates = date.substring(0,10);
+  return dates;
+}
+
+/*
+ * 导出
+ */
+module.exports = {
+  dateFormat: dateFormat
+}
