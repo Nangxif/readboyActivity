@@ -17,16 +17,18 @@ Page({
     //isPause:false,//是否触发视频暂停,防止在关闭页面的时候还弹出视频暂停时触发的弹框
     text: [],
     obj: [],//传递给子组件的数据
+    prizeitem :[],//每个人获奖的奖品
     introduction: "",//活动介绍
     prize_price:0,//价格
     share_title:"",
     share_cover:"",
     joinNum: 0,//参加活动人数
+    isfix:false,//背景是否固定
   },
   onShow: function () {
     this.setData({
-      isStart: app.globalData.isStart,
-      isEnd: app.globalData.isEnd,
+      // isStart: app.globalData.isStart,
+      // isEnd: app.globalData.isEnd,
       isShare: app.globalData.isShare,
       myself: app.globalData.myself,
     });
@@ -42,41 +44,63 @@ Page({
   },
   onReady: function () {
     var that = this;
-    if (!app.globalData.isEnd) {
-      that.setData({
-        activity_id: wx.getStorageSync('activity_id')
-      })
-      request.win_list(app.globalData.activity_id||that.data.activity_id,function (res) {
+    // if (!app.globalData.isEnd) {
+    that.setData({
+      activity_id: wx.getStorageSync('activity_id_and_num').split("-")[0]
+    })
+    request.win_list(app.globalData.activity_id||that.data.activity_id,function (res) {
+      if(res.code==1){
         that.setData({
+          isStart: true,
+          isEnd: false,
           obj: res.prizes,
-          prize: res.winners//res.winners
+          prize: res.winners,//res.winners
         }, function () {
           //跑马灯文字的总长度
-          var str = [("参加该活动人数："+that.data.joinNum)];
+          var str = [("已有" + wx.getStorageSync('activity_id_and_num').split("-")[1] + "人参与活动。\t")], prizeitem = [];
           var lenG = this.data.prize.length <= that.data.obj[0].amount ? this.data.prize.length : that.data.obj[0].amount, pz = that.data.obj[0].name;
           for (var len = 0; len < lenG; len++) {
-            str.push("恭喜" + that.data.prize[len].nickname + "完成砍价，领走" + pz+"。\t");
+            str.push("恭喜" + that.data.prize[len].nickname + "完成砍价，领走" + pz + "。\t");
+            prizeitem.push(pz);
           }
+
+
+
           that.setData({
-            text: str
+            text: str,
+            prizeitem: prizeitem
           });
           var s = str.join("");
           that.setData({
             "marquee.text": s,
             "marquee.width": marquee.getWidth(s) * 27,
-            "marquee.time": marquee.getWidth(s) / 3
+            "marquee.time": marquee.getWidth(s) / 2
           })
         })
-        request.activity_share(wx.getStorageSync('activity_id'), function (share) {
-          if(share.code==1){
+        request.activity_share(wx.getStorageSync('activity_id_and_num').split("-")[0], function (share) {
+          if (share.code == 1) {
             that.setData({
               share_title: share.data.share_title,
-              share_cover: share.data.share_cover
+              share_cover: share.data.share_cover,
+              isEnd: false,
+              isStart:true
+            })
+          } else if (share.code == -2) {
+            that.setData({
+              isStart:false,
+              isEnd: true
             })
           }
         })
-      })
-    }
+      } else if (res.code == -2){
+        that.setData({
+          isEnd: true,
+          isStart:false
+        })
+      }
+      
+    })
+    // }
   },
   onPageScroll: function (e) {
     if (e.scrollTop < 0) {
@@ -89,7 +113,7 @@ Page({
     var that = this;
     var openid = wx.getStorageSync('openid'),
       userInfo = wx.getStorageSync('userInfo'),
-      activity_id = wx.getStorageSync('activity_id')
+      activity_id = wx.getStorageSync('activity_id_and_num').split("-")[0]
     if (openid) {
       app.globalData.onShare = true;
       return {
@@ -136,17 +160,24 @@ Page({
         prize_price: e.detail.prize_price
       })
     }
+    if (e.detail.isfix != undefined){
+      this.setData({
+        isfix: e.detail.isfix
+      })
+    }
   },
   showModal: function (e) {
     this.setData({
-      ["modal[" + e.currentTarget.dataset.tip + "]"]: true
+      ["modal[" + e.currentTarget.dataset.tip + "]"]: true,
+      isfix:true
     })
     wx.stopPullDownRefresh();
   },
   //关闭弹框
   closeModal: function (e) {
     this.setData({
-      ["modal[" + e.currentTarget.dataset.out + "]"]: false
+      ["modal[" + e.currentTarget.dataset.out + "]"]: false,
+      isfix:false
     })
   },
   bindGetUser: function (e) {
@@ -155,7 +186,8 @@ Page({
   hide: function () {
     this.setData({
       "modal[0]": false,
-      "modal[1]": false
+      "modal[1]": false,
+      isfix:false
     })
   },
   hides: function (e) {

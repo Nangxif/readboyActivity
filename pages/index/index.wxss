@@ -1,3 +1,6 @@
+.fix{
+  width: 100%;
+}
 .section{
   width: 100%;
   height: 90rpx;
@@ -277,24 +280,28 @@
 .modal-store{
   width: 100%;
   max-height: 600rpx;
+  overflow-x:hidden;
   overflow-y: auto;
 }
 
 .modal-store-item{
+  box-sizing: border-box;
   padding-top: 20rpx;
   padding-bottom: 20rpx;
   width: 100%;
-  /* display: flex; */
+  display: flex;
 }
-/* .modal-flex-1{
+.modal-flex-1{
+  box-sizing: border-box;
   flex: 1;
+  max-width: 490rpx;
 }
 .modal-flex-2{
-  flex: 0 0 20rpx;
+  flex: 0 0 60rpx;
   height: 84rpx;
   line-height: 84rpx;
-  font-size: 20rpx;
-} */
+  text-align: right;
+}
 .modal-store-item-1{
   display: flex;
   height: 37rpx;
@@ -310,7 +317,7 @@
 }
 .modla-distance{
   flex: 0 0 170rpx;
-  height: 25rpx;
+  height: 27rpx;
   font-size: 20rpx;
   color: #777777;
   text-align: right;
@@ -319,8 +326,10 @@
   white-space: nowrap;
 }
 .modal-store-item-2{
+  width: 100%;
   font-size: 20rpx;
   color: #777777;
+  word-wrap : break-word;
 }
 
 
@@ -331,6 +340,31 @@
   width: 100%;
   height: 300rpx;
   z-index:2;
+}
+.touchModal_end{
+  position: absolute;
+  left: 0rpx;
+  top: 20rpx;
+  width: 100%;
+  height: 300rpx;
+  z-index:2;
+  background-color: rgba(0,0,0,0.3);
+}
+.touchModal_end_text{
+  margin: auto;
+  position: absolute;
+  left: 0rpx;
+  right: 0rpx;
+  top: 0rpx;
+  bottom: 0rpx;
+  width: 150rpx;
+  height: 50rpx;
+  text-align: center;
+  line-height: 50rpx;
+  font-size: 30rpx;
+  color: white;
+  border-radius: 25rpx;
+  background-color: rgba(0,0,0,0.8);
 }
 
 .authorization_modal{

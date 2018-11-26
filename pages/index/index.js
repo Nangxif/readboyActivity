@@ -18,6 +18,7 @@ Page({
     myAmapFun:{},//高德地图对象
     latitude:0,//本地x坐标
     longitude:0,//本地y坐标
+    citycode:0,
     destination:[],//目的地坐标数组
     distance:[],//最近距离
     isnationwideReflash: false,//全国门店是否刷新
@@ -46,7 +47,8 @@ Page({
         that.data.myAmapFun.getRegeo({//获取当前位置的名称等信息
           success: function (data) {
             that.setData({
-              region: [data[0].regeocodeData.addressComponent.province, data[0].regeocodeData.addressComponent.city, data[0].regeocodeData.addressComponent.township]
+              region: [data[0].regeocodeData.addressComponent.province, data[0].regeocodeData.addressComponent.city, data[0].regeocodeData.addressComponent.township],
+              citycode: data[0].regeocodeData.addressComponent.adcode
             })
             request.index(that.data.longitude, that.data.latitude, data[0].regeocodeData.addressComponent.adcode,function(inde){
               if (inde.code==1){
@@ -55,7 +57,7 @@ Page({
                 })
               }
             })
-            request.activities(that.data.page, that.data.longitude, that.data.latitude, function (nation) {
+            request.activities(that.data.page, that.data.longitude, that.data.latitude, data[0].regeocodeData.addressComponent.adcode,function (nation) {
               if (nation.code === 1) {
                 if (nation.data.length != 0) {
                   that.setData({
@@ -138,7 +140,7 @@ Page({
         }
         that.setData({
           distance: distances,
-          isModalShow: true
+          isModalShow: true,
         })
       })
     }else{
@@ -168,40 +170,14 @@ Page({
   goMap:function(e){
     // wx.setStorageSync('distance', this.data.destination[e.currentTarget.dataset.index]);
     // console.log(e.currentTarget.dataset.index);
-    var dataIndex = 0;
+    var dataIndex = 0,that = this;
     if (e.currentTarget.dataset.index>=0){
-      wx.setStorage({
-        key: "target",
-        data: {
-          lat: this.data.activityDetail.same_endpoints[e.currentTarget.dataset.index].lat,
-          lon: this.data.activityDetail.same_endpoints[e.currentTarget.dataset.index].lng
-        },
-        success: function () {
-          wx.navigateTo({
-            url: '../Map/map'
-          })
-        }
-      })
-    }else{
-      if (/all/.test(e.currentTarget.dataset.store)){
+      if (this.data.distance[e.currentTarget.dataset.index]<=30){
         wx.setStorage({
           key: "target",
           data: {
-            lat: this.data.nationwideactivityItem[e.currentTarget.dataset.store.substring(3)].same_endpoints[0].lat,
-            lon: this.data.nationwideactivityItem[e.currentTarget.dataset.store.substring(3)].same_endpoints[0].lng
-          },
-          success: function () {
-            wx.navigateTo({
-              url: '../Map/map'
-            })
-          }
-        })
-      }else{
-        wx.setStorage({
-          key: "target",
-          data: {
-            lat: this.data.activityItem[e.currentTarget.dataset.store].same_endpoints[0].lat,
-            lon: this.data.activityItem[e.currentTarget.dataset.store].same_endpoints[0].lng
+            lat: this.data.activityDetail.same_endpoints[e.currentTarget.dataset.index].lat,
+            lon: this.data.activityDetail.same_endpoints[e.currentTarget.dataset.index].lng
           },
           success: function () {
             wx.navigateTo({
@@ -210,14 +186,45 @@ Page({
           }
         })
       }
-      
+    }else{
+      if (/all/.test(e.currentTarget.dataset.store)){
+        if (that.distanceFilter(that.data.nationwideactivityItem[e.currentTarget.dataset.store.substring(3)].same_endpoints[0].lat, that.data.nationwideactivityItem[e.currentTarget.dataset.store.substring(3)].same_endpoints[0].lng) <= 30){
+          wx.setStorage({
+            key: "target",
+            data: {
+              lat: this.data.nationwideactivityItem[e.currentTarget.dataset.store.substring(3)].same_endpoints[0].lat,
+              lon: this.data.nationwideactivityItem[e.currentTarget.dataset.store.substring(3)].same_endpoints[0].lng
+            },
+            success: function () {
+              wx.navigateTo({
+                url: '../Map/map'
+              })
+            }
+          })
+        }
+      }else{
+        if (that.distanceFilter(this.data.activityItem[e.currentTarget.dataset.store].same_endpoints[0].lat, this.data.activityItem[e.currentTarget.dataset.store].same_endpoints[0].lng)<=30){
+          wx.setStorage({
+            key: "target",
+            data: {
+              lat: this.data.activityItem[e.currentTarget.dataset.store].same_endpoints[0].lat,
+              lon: this.data.activityItem[e.currentTarget.dataset.store].same_endpoints[0].lng
+            },
+            success: function () {
+              wx.navigateTo({
+                url: '../Map/map'
+              })
+            }
+          })
+        }
+      }
     }
   },
   goActivity:function(e){
     var that = this;
     if (wx.getStorageSync('userInfo')){
       wx.setStorage({
-        key: 'activity_id',
+        key: 'activity_id_and_num',
         data: e.currentTarget.dataset.activity,
         success: function (res) {
           wx.navigateTo({
@@ -230,7 +237,7 @@ Page({
         isAuthorization: true
       })
       wx.setStorage({
-        key: 'activity_id',
+        key: 'activity_id_and_num',
         data: e.currentTarget.dataset.activity
       })
     }
@@ -241,7 +248,7 @@ Page({
       isnationwideReflash: true
     })
     
-    request.activities(this.data.page, that.data.longitude, that.data.latitude, function (nation) {
+    request.activities(this.data.page, that.data.longitude, that.data.latitude, that.data.citycode,function (nation) {
       if (nation.code === 1) {
         if (nation.data.length != 0) {
           var nationwideactivityItemArr = that.data.nationwideactivityItem;

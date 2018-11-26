@@ -319,11 +319,12 @@ function index(lng, lat, city,callback){
   })
 }
  
-function activities(page, lng, lat,callback){
+function activities(page, lng, lat, city,callback){
   var postData = {};
   postData.page = page;
   postData.lng = lng;
   postData.lat = lat;
+  postData.city = city;
   return postPromise("api/activities", makeSn(postData), res => {
     typeof callback === "function" && callback(res)
   })

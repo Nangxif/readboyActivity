@@ -135,6 +135,7 @@ Component({
                 isAmiantion: true,
                 friend_help: [{ avatar: wx.getStorageSync('userInfo').avatarUrl, money: that.data.howmuch, nickname: wx.getStorageSync('userInfo').nickName }, ...that.data.friend_help]
               })
+              that.triggerEvent('myevent', { isfix: true });
             })
             if (res.position > 0) {
               that.setData({
@@ -149,6 +150,7 @@ Component({
             that.setData({
               "modal[1]": true
             })
+            that.triggerEvent('myevent', { isfix: true });
           }
         })
       }
@@ -159,6 +161,7 @@ Component({
         this.setData({
           ["modal[" + e.currentTarget.dataset.out + "]"]: false
         });
+        this.triggerEvent('myevent', { isfix: false });
       } else {
         this.setData({
           "modal[1]": false,
@@ -182,6 +185,7 @@ Component({
           that.setData({
             animationData1: this.animation1.export()
           })
+          that.triggerEvent('myevent', { isfix: false });
         })
       }
     },
@@ -220,7 +224,7 @@ Component({
       delete app.globalData.firend_nickName;
       delete app.globalData.firend_avatarUrl;
       wx.redirectTo({
-        url: 'main',
+        url: '../index/index',
       })
     }
   }

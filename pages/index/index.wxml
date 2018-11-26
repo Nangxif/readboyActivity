@@ -1,4 +1,5 @@
 <wxs src="../../utils/filter.wxs" module="filter" />
+<view class='fix' style="{{isModalShow?'position:fixed;':''}}">
 <view class="section">
   <view class='section-ico'><view class='address-icon'></view></view>  
   <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}" class='section-picker'>
@@ -38,7 +39,8 @@
         <view class='item-store' wx:if="{{activityItem[0].same_endpoints.length==1}}" data-store="0">{{activityItem[0].same_endpoints[0].county}}</view>
       </view>
     </view>
-    <view class='touchModal' bindtap='goActivity' data-activity="{{activityItem[0].activity}}"></view>
+    <view class='touchModal' bindtap='goActivity' data-activity="{{activityItem[0].activity}}-{{activityItem[0].participant_num}}" wx:if="{{filter.acticityFilter(activityItem[0].end_time)<0}}"></view>
+    <view class='touchModal_end' bindtap='goActivity' data-activity="{{activityItem[0].activity}}-{{activityItem[0].participant_num}}" wx:if="{{filter.acticityFilter(activityItem[0].end_time)>=0}}"><view class='touchModal_end_text'>已结束</view></view>
   </view>
 </view>
 
@@ -64,7 +66,8 @@
         <view class='item-store' wx:if="{{item.same_endpoints.length==1}}" bindtap='goMap' data-store="{{index}}">{{item.same_endpoints[0].county}}</view>
       </view>
     </view>
-    <view class='touchModal' bindtap='goActivity' data-activity="{{item.activity}}"></view>
+    <view class='touchModal' bindtap='goActivity' data-activity="{{item.activity}}-{{item.participant_num}}" wx:if="{{filter.acticityFilter(item.end_time)<0}}"></view>
+    <view class='touchModal_end' bindtap='goActivity' data-activity="{{item.activity}}-{{item.participant_num}}" wx:if="{{filter.acticityFilter(item.end_time)>=0}}"><view class='touchModal_end_text'>已结束</view></view>
   </view>
 </view>
 
@@ -92,7 +95,8 @@
         <view class='item-store' bindtap='goMap' wx:if="{{item.same_endpoints.length<=1}}" data-store="all{{index}}">{{item.same_endpoints[0].name}}</view>
       </view>
     </view>
-    <view class='touchModal' bindtap='goActivity' data-activity="{{item.activity}}"></view>
+    <view class='touchModal' bindtap='goActivity' data-activity="{{item.activity}}-{{item.participant_num}}" wx:if="{{filter.acticityFilter(item.end_time)<0}}"></view>
+    <view class='touchModal_end' bindtap='goActivity' data-activity="{{item.activity}}-{{item.participant_num}}" wx:if="{{filter.acticityFilter(item.end_time)>=0}}"><view class='touchModal_end_text'>已结束</view></view>
   </view>
   <view class='localreflash' wx:if="{{canflash&&!isnationwideReflash&&nationwideactivityItem.length>0}}" bindtap='nationwideReflash'>点击加载更多</view>
   <view class='localreflash' wx:if="{{canflash&&isnationwideReflash}}"><image src='../../images/loading.gif' class='loading'></image></view>
@@ -107,16 +111,16 @@
     <view class='modal-title'>参与门店</view>
     <view class='modal-store'>
       <view class='modal-store-item' wx:for="{{activityDetail.same_endpoints}}" bindtap='goMap' data-index="{{index}}">
-        <!-- <view class='modal-flex-1'> -->
+        <view class='modal-flex-1'>
           <view class='modal-store-item-1'>
             <view class='modal-county'>{{item.name}}</view>
             <view class='modla-distance'>距离：{{distance[index]}}KM</view>
           </view>
           <view class='modal-store-item-2'>
-          {{item.address}}[点击显示地图]
+          {{item.address}}
           </view>
-        <!-- </view> -->
-        <!-- <view class='modal-flex-2'>></view> -->
+        </view>
+        <view class='modal-flex-2'><view class='address-icon' wx:if="{{distance[index]<=30}}"></view></view>
       </view>
     </view>
   </view>
@@ -138,4 +142,4 @@
     </button>
   </view>
 </view>
-
+</view>

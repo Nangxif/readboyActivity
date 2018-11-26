@@ -126,43 +126,11 @@
       <view class='Winpad-input'>
         <label for='tel' class='Winpad-input_1'>联系电话</label>
         <input type="number" maxlength="12" id='tel' class='Winpad-input_2' placeholder='座机需填区号' name="tel"/>
-      </view>    
+      </view>      
       <view class='Winpad-input'>
-        <label for='address' class='Winpad-input_1'>邮寄地址</label>
-        <input type="text" id='address' class='Winpad-input_2' placeholder='请输入邮寄地址' name="address"/>
-      </view>    
-      <view class='Winpad-input'>
-        <view class='Winpad-input-foot'>{{prize_setting[prize_level].name}}以邮寄方式兑换，如不填写，活动结束默认放弃领奖</view>
+        <view class='Winpad-input-foot'>请在活动有效期内到相应活动门店兑换礼品，请在活动有效期内到相应活动门店兑奖礼品。建议截图作为兑奖凭证。</view>
       </view>
       <button class='Winpad-bottom-btn' data-out='4' form-type='submit'>保存</button>
-    </form>
-  </view>
-
-  <view class='WinModalContentticket win-bg' wx:if="{{prize_level!=0}}"><!--当排名为11之后时-->
-    <view class='WinticketModalCloseview' bindtap='closeModal' data-out='2'>
-      <image class='WinticketModalClose' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAdCAMAAABhTZc9AAAAOVBMVEUAAAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VACj17o6AAAAEnRSTlMA6i4B3Zh6HfWwpYXzcUFALQZdzogUAAAAeUlEQVQoz23PSwqEQBRD0VRVa2vbP9/+FyuIeAdJpgcCV/vausLGtPyktepkw6rlq0ddbFg16wk7Cg4IZ4QdnUFn0DkiDCZ+gYFBZ9A3ztt3NyCF7oANdpzv7oQSHBCOCDs6g4lBZzAymLiBxpv+7ULnaUj9I0Xehg6rUA9sSOntiwAAAABJRU5ErkJggg=='></image>
-    </view>
-    <view class='ticketTitle'>
-      <image src='../../images/orangeleft.png' class='ticketleft'></image>
-      第{{ranking}}名
-      <image src='../../images/orangeright.png' class='ticketright'></image>
-    </view>
-    <view class='ticket'>
-      <image src='{{prize_setting[prize_level].pic_link}}' class='Winticketicon'></image>
-      <view class='WinticketText'>恭喜您获得{{prize_setting[prize_level].name}}</view>
-    </view>
-    <form class='Winticket-bottom' bindsubmit='save'>
-      <view class='Winticket-input'>
-        <view class='Winticket-input-title'>兑奖方式：（必填）</view>
-      </view>
-      <view class='Winticket-input'>
-        <label for='tel' class='Winticket-input_1'>手机号码</label>
-        <input type="text" id='tel' maxlength="11" class='Winticket-input_2' placeholder='请输入手机号码' name='tel'/>
-      </view> 
-      <view class='Winticket-input'>
-        <view class='Winticket-input-foot'>登记手机号，凭手机号上天猫读书郎官方旗舰店找客服领取，如不填写，活动结束默认放弃领奖</view>
-      </view>
-      <button class='Winticket-bottom-btn' bindtap='save' data-out='4' form-type='submit'>保存</button>
     </form>
   </view>
 </view>

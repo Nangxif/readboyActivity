@@ -1,5 +1,8 @@
 /**index.wxss**/
 @import "../../public/image.wxss";
+.fix{
+  width: 100%;
+}
 .vi{
   position: absolute;
   left: 83rpx;

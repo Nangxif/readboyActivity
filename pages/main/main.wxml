@@ -1,10 +1,11 @@
+<view class='fix' style="{{isfix?'position:fixed;':''}}">
 <view class="containerstart" wx:if="{{isStart}}"><!-- 活动未结束-->
   <image src='../../images/startbg.png' class='startbg'></image>
   <view class='bgtitle'>价值{{prize_price}}元的{{obj[0].name}}免费领走，先到先得</view>
   <my-component wx:if="{{myself}}" id="componentId" bind:myevent="onMyEvent" obj="{{obj}}"/><!--活动未结束非分享组件-->
   <other-component wx:if="{{isShare}}"  bind:myevent="onMyEvent"/><!--活动未结束分享组件-->
   <!-- 跑马灯 -->
-  <view class='lamp' wx:if="{{prize.length>0}}">
+  <view class='lamp'>
     <view class='lamp-content' style="--marqueeWidth--:{{-marquee.width}}rpx;--marqueeTime--:{{marquee.time}}s;">
       {{marquee.text}}
     </view>
@@ -36,7 +37,7 @@
     </view>
   </view>
   <!-- 排行榜模态框 -->
-  <view class='rankingModal' style='{{modal[1]?"display:block;":"display:none;"}}' catchtap='hide'>
+  <view class='rankingModal' style='{{modal[1]?"display:block;":"display:none;"}}' catchtap='hide' catchtouchmove="true">
     <image src='../../images/0.png' class='indexmodalbg' catchtap='hides'></image>
     <view class='rankingModalContent' catchtap='hides'>
       <view class='rankingModalCloseview' bindtap='closeModal' data-out='1'>
@@ -52,16 +53,10 @@
           <image src='../../images/none.png' class='rankingnone_pic'></image>
           <view class='rankingnone_text'>空空如也</view>
         </view>
-        <view class='ranking-scroll' style='{{prize.length>0&&prize.length<=10?"display:block;":"display:none;"}}'>
+        <view class='ranking-scroll' style='{{prize.length>0?"display:block;":"display:none;"}}'>
           <view class='ranking-prize' wx:for="{{prize}}">
             <view class='ranking-prize_1'><image src='{{item.avatar}}' class='ranking-prize_pic'></image></view>
-            <view class='ranking-prize_2'><view class='ranking-prize-name'>{{item.nickname}}</view>：完成砍价，获得读书郎学生平板G550A一台</view>
-          </view>
-        </view>
-        <view class='ranking-scroll' style='{{prize.length>10?"display:block;":"display:none;"}}'>
-          <view class='ranking-prize' wx:for="{{prize}}">
-            <view class='ranking-prize_1'><image src='{{item.avatar}}' class='ranking-prize_pic'></image></view>
-            <view class='ranking-prize_2'><view class='ranking-prize-name'>{{item.nickname}}</view>：完成砍价，获得读书郎学生平板200元优惠券</view>
+            <view class='ranking-prize_2'><view class='ranking-prize-name'>{{item.nickname}}</view>：完成砍价，获得{{prizeitem[index]}}</view>
           </view>
         </view>
       </view>
@@ -77,4 +72,7 @@
   <end-component></end-component>
 </view>
 
+
+
+</view>
 

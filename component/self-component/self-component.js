@@ -42,7 +42,7 @@ Component({
     var that = this;
     //此处调用接口初始化数据
     that.setData({
-      activity_id: wx.getStorageSync('activity_id')
+      activity_id: wx.getStorageSync('activity_id_and_num').split("-")[0]
     })
     if (wx.getStorageSync('userInfo').nickName) {
       request.player(that.data.activity_id, function(res){
@@ -124,17 +124,19 @@ Component({
                   friend_help: [{ avatar: wx.getStorageSync('userInfo').avatarUrl, money: res.money, nickname: wx.getStorageSync('userInfo').nickName }, ...that.data.friend_help]
                 })
               })
+              that.triggerEvent('myevent', { isfix: true });
             }else{
               that.setData({
                 howmuch: res.money,
-                friend_help: [{ avatar: wx.getStorageSync('userInfo').avatarUrl, money: res.money, nickname: wx.getStorageSync('userInfo').nickName }, ...that.data.friend_help]
+                friend_help: [{ avatar: wx.getStorageSync('userInfo').avatarUrl, money: res.money, nickname: wx.getStorageSync('userInfo').nickName }, ...that.data.friend_help],
+                ranking: res.position
               }, function () {
                 that.setData({
                   "modal[1]": true,
                   isAmiantion: true,
                   isWin: true
                 })
-                that.triggerEvent('myevent', { isWin: true });
+                that.triggerEvent('myevent', { isWin: true, isfix: true });
               })
             }
           }
@@ -150,6 +152,7 @@ Component({
           isPlay: false,
           noPlay:false,
         });
+        that.triggerEvent('myevent', { isfix: false });
       }else{
         this.setData({
           "modal[1]": false,
@@ -175,6 +178,7 @@ Component({
             animationData1: this.animation1.export()
           })
         })
+        that.triggerEvent('myevent', { isfix: false });
       }
     },
     bindGetUserInfo: function (e) {
@@ -235,6 +239,7 @@ Component({
       this.setData({
         "modal[2]":true
       })
+      this.triggerEvent('myevent', { isfix: true });
     },
     save: function (e) {//输入信息兑换成功
       var that = this;
@@ -263,6 +268,7 @@ Component({
                     isconvert: true,
                     "modal[2]": false
                   })
+                  that.triggerEvent('myevent', { isLogin: false });
                 } else {
                   wx.showModal({
                     title: "提交失败",

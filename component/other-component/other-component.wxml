@@ -22,7 +22,7 @@
   <view class='win' wx:if="{{isWin}}"><!--兑奖之后的界面-->
     <view class='win-title'>中奖啦</view>
     <image src='{{prize_setting[prize_level].pic_link}}' class='Winicon'></image>
-    <view class='win-content'>恭喜您获得{{prize_setting[prize_level].name}}</view>
+    <view class='win-content'>恭喜{{nickName}}获得{{prize_setting[prize_level].name}}</view>
   </view>
 
   <view class='btns' wx:if="{{isLogin&&!isWin}}"><!--已登录时按钮-->

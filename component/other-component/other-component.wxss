@@ -267,7 +267,7 @@
   display: inline-block;
   box-sizing: border-box;
   padding-left: 19rpx;
-  max-width:202rpx; 
+  max-width:198rpx; 
   height: 116rpx;
   line-height: 116rpx;
   font-size: 30rpx;
@@ -282,6 +282,9 @@
   height: 116rpx;
   line-height: 116rpx;
   font-size: 30rpx;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
   vertical-align: top;
 }
 
