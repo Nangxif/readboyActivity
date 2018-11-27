@@ -5,7 +5,7 @@
   <my-component wx:if="{{myself}}" id="componentId" bind:myevent="onMyEvent" obj="{{obj}}"/><!--活动未结束非分享组件-->
   <other-component wx:if="{{isShare}}"  bind:myevent="onMyEvent"/><!--活动未结束分享组件-->
   <!-- 跑马灯 -->
-  <view class='lamp'>
+  <view class='lamp' wx:if="{{activity_id}}">
     <view class='lamp-content' style="--marqueeWidth--:{{-marquee.width}}rpx;--marqueeTime--:{{marquee.time}}s;">
       {{marquee.text}}
     </view>
@@ -54,9 +54,9 @@
           <view class='rankingnone_text'>空空如也</view>
         </view>
         <view class='ranking-scroll' style='{{prize.length>0?"display:block;":"display:none;"}}'>
-          <view class='ranking-prize' wx:for="{{prize}}">
+          <view class='ranking-prize' wx:for="{{prize}}" wx:if="{{item.prize!='奖品名额已满'}}">
             <view class='ranking-prize_1'><image src='{{item.avatar}}' class='ranking-prize_pic'></image></view>
-            <view class='ranking-prize_2'><view class='ranking-prize-name'>{{item.nickname}}</view>：完成砍价，获得{{prizeitem[index]}}</view>
+            <view class='ranking-prize_2'><view class='ranking-prize-name'>{{item.nickname}}</view>：完成砍价，获得{{item.prize}}</view>
           </view>
         </view>
       </view>

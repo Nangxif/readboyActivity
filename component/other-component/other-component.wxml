@@ -19,10 +19,13 @@
       <view class='info'>已经砍下<view class='infoPirce'>{{originmuch}}</view>元，还差<view class='infoPirce'>{{prize_price-originmuch}}</view>元</view>
     </view>
   </view>
-  <view class='win' wx:if="{{isWin}}"><!--兑奖之后的界面-->
+  <view class='win' wx:if="{{isWin&&!isLastOne}}"><!--兑奖之后的界面-->
     <view class='win-title'>中奖啦</view>
     <image src='{{prize_setting[prize_level].pic_link}}' class='Winicon'></image>
     <view class='win-content'>恭喜{{nickName}}获得{{prize_setting[prize_level].name}}</view>
+  </view>
+  <view class='selfinfos' wx:if="{{isWin&&isLastOne}}"><!--获奖但是还没兑奖的界面-->
+    <view class='wininfo'>很遗憾，获奖名额已满，砍价结束</view>
   </view>
 
   <view class='btns' wx:if="{{isLogin&&!isWin}}"><!--已登录时按钮-->
@@ -72,6 +75,26 @@
       </cover-view>
     </cover-view>
   </cover-view>
+
+
+
+  <cover-view class='CutModal' style='{{modal[2]?"display:block;":"display:none;"}}'>
+    <cover-image src='../../images/00.png' class='othermodalbg'></cover-image>
+    <cover-view class='CutModalContent'>
+      <cover-view class='CutModalCloseview' bindtap='closeModal' data-out='2'>
+        <cover-image class='CutModalClose' src='../../images/close.png'></cover-image>
+      </cover-view>
+      <cover-view class='CutModalTitle'>
+        <cover-image src='../../images/wholeft.png' class='cutleft'></cover-image>
+        很遗憾
+        <cover-image src='../../images/whoright.png' class='cutright'></cover-image>
+      </cover-view>
+      <cover-view class='CutModalBody'>
+        <cover-view class='CutModalText'>很遗憾，获奖名额已满</cover-view>
+      </cover-view>
+    </cover-view>
+  </cover-view>
+
 
 
 <!-- toast弹框 -->

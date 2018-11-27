@@ -18,6 +18,7 @@ Component({
     nickName: "未授权",
     avatarUrl: "",
     modal: [false, false, false],//0、看视频砍价弹框，1、砍价弹框，2、兑奖弹框
+    isLastOne: false,//是否第一个没中奖
     friend_help: [],
     originmuch: 0,//已砍钱数
     howmuch: 0,//砍了多少钱
@@ -58,6 +59,20 @@ Component({
     })
     request.invitation(app.globalData.activity_id,app.globalData.friend_openid).then(res => {
       if (res.code == 1) {
+        var po = 0, leng = res.prize_setting.length, level = 0;
+        if (res.position != 0) {//确定奖品等级
+          for (var l = 0; l <= leng; l++) {
+            if (res.position > po) {
+              po = po + res.prize_setting[l] ? res.prize_setting[l].amount : 0;
+            } else {
+              level = l - 1;
+              break;
+            }
+          }
+          that.setData({
+            prize_level: level
+          })
+        }
         that.setData({
           isWin: (res.position != 0),
           prize_price: res.prize_price,
@@ -74,20 +89,7 @@ Component({
           cover_link: res.cover_link,
           prize_setting: res.prize_setting,
         },function(){
-          var po = 0, leng = res.prize_setting.length, level = 0;
-          if (res.position != 0) {
-            for (var l = 0; l < leng; l++) {
-              if (res.position > po) {
-                po = po + res.prize_setting[l].amount;
-              } else {
-                level = l - 1;
-                break;
-              }
-            }
-            that.setData({
-              prize_level: level
-            })
-          }
+          
           that.triggerEvent('myevent', { isWin: that.data.isWin,introduction: res.introduction.replace(/\<br\>/g, "\n"), prize_price: res.prize_price });
         })
         if (wx.getStorageSync("userInfo")) {
@@ -129,17 +131,38 @@ Component({
               hasCutChance: true,
               howmuch: res.money,
               isCut: -3,
-            }, function () {
-              that.setData({
-                "modal[1]": true,
-                isAmiantion: true,
-                friend_help: [{ avatar: wx.getStorageSync('userInfo').avatarUrl, money: that.data.howmuch, nickname: wx.getStorageSync('userInfo').nickName }, ...that.data.friend_help]
-              })
-              that.triggerEvent('myevent', { isfix: true });
             })
             if (res.position > 0) {
               that.setData({
                 isWin: true
+              })
+              var po = 0, leng = that.data.prize_setting.length, level = 0;
+              for (var l = 0; l <= leng; l++) {
+                if (res.position > po) {
+                  if (that.data.prize_setting[l]) {
+                    po = po + that.data.prize_setting[l].amount;
+                  } else {
+                    level = l;
+                  }
+                } else {
+                  level = l - 1;
+                  break;
+                }
+              }
+              that.setData({
+                prize_level: level
+              })
+              if(!that.data.prize_setting[level]){
+                that.setData({
+                  "modal[2]":true,
+                  isLastOne:true
+                })
+              }
+            } else {
+              that.setData({
+                "modal[1]": true,
+                isAmiantion: true,
+                friend_help: [{ avatar: wx.getStorageSync('userInfo').avatarUrl, money: that.data.howmuch, nickname: wx.getStorageSync('userInfo').nickName }, ...that.data.friend_help]
               })
             }
           } else if (res.code == 2) {

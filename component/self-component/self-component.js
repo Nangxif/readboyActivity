@@ -16,7 +16,8 @@ Component({
     isWin:false,
     nickName:"未授权",
     avatarUrl:"",
-    modal:[false,false,false],//0、看视频砍价弹框，1、砍价弹框，2、兑奖弹框
+    modal:[false,false,false,false],//0、看视频砍价弹框，1、砍价弹框，2、兑奖弹框
+    isLastOne:false,
     friend_help: [],
     prize_price: 0,//奖品价格
     originmuch:0,//已砍钱数
@@ -47,6 +48,45 @@ Component({
     if (wx.getStorageSync('userInfo').nickName) {
       request.player(that.data.activity_id, function(res){
         if(res.code==1){
+          var po = 0, leng = res.prize_setting.length, level = 0;
+          if (res.position != 0) {//判断奖品等级
+            for (var l = 0; l <= leng; l++) {
+              if (res.position > po) {
+                if (res.prize_setting[l]) {
+                  po = po + res.prize_setting[l].amount;
+                } else {
+                  level = l;
+                }
+              } else {
+                level = l - 1;
+                break;
+              }
+            }
+            that.setData({
+              prize_level: level
+            })
+          }
+          if (wx.getStorageSync('activity_id_and_num').split("-")[2] == 2) {//活动提前结束
+              if (!res.prize_setting[level]){//如果排名超过奖品数量
+                that.triggerEvent('myevent', { isStart: false, isEnd: true });
+              }else{
+                if (res.prize_received) {
+                  that.triggerEvent('myevent', { isStart: false, isEnd: true });
+                } else {
+                  that.triggerEvent('myevent', { isStart: true, isEnd: false });
+                }
+              }
+          } else {//活动还没结束
+            request.activity_share(wx.getStorageSync('activity_id_and_num').split("-")[0], function (share) {
+              if (share.code == 1) {
+                that.triggerEvent('myevent', { share_title: share.data.share_title, share_cover: share.data.share_cover, });
+              }
+            })
+          }
+
+
+
+
           that.setData({
             nickName: wx.getStorageSync("userInfo").nickName,
             avatarUrl: wx.getStorageSync("userInfo").avatarUrl,
@@ -65,20 +105,6 @@ Component({
             cover_link: res.cover_link,
             prize_setting: res.prize_setting,
           })
-          var po = 0, leng = res.prize_setting.length,level=0;
-          if (res.position != 0){
-            for (var l = 0; l < leng;l++){
-              if (res.position > po){
-                po = po + res.prize_setting[l].amount;
-              }else{
-                level = l-1;
-                break;
-              }
-            }
-            that.setData({
-              prize_level: level
-            })
-          }
           that.triggerEvent('myevent', { isWin: that.data.isWin, introduction: res.introduction.replace(/\<br\>/g, "\n"), prize_price: res.prize_price});
         }else{
           that.setData({
@@ -113,8 +139,8 @@ Component({
       var that=this;
       if(this.data.isCut>0){
         request.player_roll(that.data.activity_id, wx.getStorageSync('userInfo').nickName, wx.getStorageSync('userInfo').avatarUrl,function(res){
-          if(res.code==1){
-            if(res.position==0){
+          if(res.code==1){//砍价成功
+            if(res.position==0){//砍价成功还没中奖
               that.setData({
                 howmuch: res.money,
               }, function () {
@@ -124,25 +150,47 @@ Component({
                   friend_help: [{ avatar: wx.getStorageSync('userInfo').avatarUrl, money: res.money, nickname: wx.getStorageSync('userInfo').nickName }, ...that.data.friend_help]
                 })
               })
-              that.triggerEvent('myevent', { isfix: true });
-            }else{
+            }else{//砍价成功中奖
+              var po = 0, leng = that.data.prize_setting.length, level = 0;
+              for (var l = 0; l <= leng; l++) {
+                if (res.position > po) {
+                  if (that.data.prize_setting[l]) {
+                    po = po + that.data.prize_setting[l].amount;
+                  } else {
+                    level = l;
+                  }
+                } else {
+                  level = l - 1;
+                  break;
+                }
+              }
               that.setData({
-                howmuch: res.money,
-                friend_help: [{ avatar: wx.getStorageSync('userInfo').avatarUrl, money: res.money, nickname: wx.getStorageSync('userInfo').nickName }, ...that.data.friend_help],
-                ranking: res.position
-              }, function () {
+                prize_level: level
+              })
+              if (that.data.prize_setting[level]){//如果砍完价之后的排名有对应奖品
                 that.setData({
-                  "modal[1]": true,
-                  isAmiantion: true,
+                  howmuch: res.money,
+                  friend_help: [{ avatar: wx.getStorageSync('userInfo').avatarUrl, money: res.money, nickname: wx.getStorageSync('userInfo').nickName }, ...that.data.friend_help],
+                  ranking: res.position
+                }, function () {
+                  that.setData({
+                    "modal[1]": true,
+                    isAmiantion: true,
+                    isWin: true
+                  })
+                })
+              } else {//如果砍完价之后的排名没有对应奖品，活动结束
+                that.setData({
+                  "modal[3]": true,
+                  isLastOne:true,
                   isWin: true
                 })
                 that.triggerEvent('myevent', { isWin: true, isfix: true });
-              })
+              }
             }
           }
         })
       }
-      console.log(this.properties.obj);
     },
     closeModal:function(e){
       var that=this;
@@ -207,9 +255,13 @@ Component({
             }, function () {
               var po = 0, leng = res.prize_setting.length, level = 0;
               if (res.position != 0) {
-                for (var l = 0; l < leng; l++) {
+                for (var l = 0; l <= leng; l++) {
                   if (res.position > po) {
-                    po = po + res.prize_setting[l].amount;
+                    if (res.prize_setting[l]) {
+                      po = po + res.prize_setting[l].amount;
+                    } else {
+                      level = l;
+                    }
                   } else {
                     level = l - 1;
                     break;
@@ -268,7 +320,7 @@ Component({
                     isconvert: true,
                     "modal[2]": false
                   })
-                  that.triggerEvent('myevent', { isLogin: false });
+                  that.triggerEvent('myevent', { isLogin: false, isfix: false });
                 } else {
                   wx.showModal({
                     title: "提交失败",

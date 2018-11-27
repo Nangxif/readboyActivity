@@ -1,5 +1,5 @@
 <wxs src="../../utils/filter.wxs" module="filter" />
-<view class='fix' style="{{isModalShow?'position:fixed;':''}}">
+<view class='fix'>
 <view class="section">
   <view class='section-ico'><view class='address-icon'></view></view>  
   <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}" class='section-picker'>
@@ -36,11 +36,11 @@
       <view class='item-more'>
         <view class='item-num'><image src='../../images/12.png' class='item-icon'></image> {{activityItem[0].participant_num}}</view>
         <view class='item-store' bindtap='show' wx:if="{{activityItem[0].same_endpoints.length>1}}" data-store="0">[{{activityItem[0].same_endpoints.length}}家门店通用]</view>
-        <view class='item-store' wx:if="{{activityItem[0].same_endpoints.length==1}}" data-store="0">{{activityItem[0].same_endpoints[0].county}}</view>
+        <view class='item-store' wx:if="{{activityItem[0].same_endpoints.length==1}}" data-store="0">{{activityItem[0].same_endpoints[0].name}}</view>
       </view>
     </view>
-    <view class='touchModal' bindtap='goActivity' data-activity="{{activityItem[0].activity}}-{{activityItem[0].participant_num}}" wx:if="{{filter.acticityFilter(activityItem[0].end_time)<0}}"></view>
-    <view class='touchModal_end' bindtap='goActivity' data-activity="{{activityItem[0].activity}}-{{activityItem[0].participant_num}}" wx:if="{{filter.acticityFilter(activityItem[0].end_time)>=0}}"><view class='touchModal_end_text'>已结束</view></view>
+    <view class='touchModal' bindtap='goActivity' data-activity="{{activityItem[0].activity}}-{{activityItem[0].participant_num}}-{{activityItem[0].ended}}" wx:if="{{activityItem[0].ended==0}}"></view>
+    <view class='touchModal_end' bindtap='goActivity' data-activity="{{activityItem[0].activity}}-{{activityItem[0].participant_num}}-{{activityItem[0].ended}}" wx:if="{{activityItem[0].ended!=0}}"><view class='touchModal_end_text'>已结束</view></view>
   </view>
 </view>
 
@@ -63,11 +63,11 @@
       <view class='item-more'>
         <view class='item-num'><image src='../../images/12.png' class='item-icon'></image> {{item.participant_num}}</view>
         <view class='item-store' bindtap='show' wx:if="{{item.same_endpoints.length>1}}" data-store="{{index}}">[{{item.same_endpoints.length}}家门店通用]</view>
-        <view class='item-store' wx:if="{{item.same_endpoints.length==1}}" bindtap='goMap' data-store="{{index}}">{{item.same_endpoints[0].county}}</view>
+        <view class='item-store' wx:if="{{item.same_endpoints.length==1}}" bindtap='goMap' data-store="{{index}}">{{item.same_endpoints[0].name}}</view>
       </view>
     </view>
-    <view class='touchModal' bindtap='goActivity' data-activity="{{item.activity}}-{{item.participant_num}}" wx:if="{{filter.acticityFilter(item.end_time)<0}}"></view>
-    <view class='touchModal_end' bindtap='goActivity' data-activity="{{item.activity}}-{{item.participant_num}}" wx:if="{{filter.acticityFilter(item.end_time)>=0}}"><view class='touchModal_end_text'>已结束</view></view>
+    <view class='touchModal' bindtap='goActivity' data-activity="{{item.activity}}-{{item.participant_num}}-{{item.ended}}" wx:if="{{item.ended==0}}"></view>
+    <view class='touchModal_end' bindtap='goActivity' data-activity="{{item.activity}}-{{item.participant_num}}-{{item.ended}}" wx:if="{{item.ended!=0}}"><view class='touchModal_end_text'>已结束</view></view>
   </view>
 </view>
 
@@ -95,8 +95,8 @@
         <view class='item-store' bindtap='goMap' wx:if="{{item.same_endpoints.length<=1}}" data-store="all{{index}}">{{item.same_endpoints[0].name}}</view>
       </view>
     </view>
-    <view class='touchModal' bindtap='goActivity' data-activity="{{item.activity}}-{{item.participant_num}}" wx:if="{{filter.acticityFilter(item.end_time)<0}}"></view>
-    <view class='touchModal_end' bindtap='goActivity' data-activity="{{item.activity}}-{{item.participant_num}}" wx:if="{{filter.acticityFilter(item.end_time)>=0}}"><view class='touchModal_end_text'>已结束</view></view>
+    <view class='touchModal' bindtap='goActivity' data-activity="{{item.activity}}-{{item.participant_num}}-{{item.ended}}" wx:if="{{item.ended==0}}"></view>
+    <view class='touchModal_end' bindtap='goActivity' data-activity="{{item.activity}}-{{item.participant_num}}-{{item.ended}}" wx:if="{{item.ended!=0}}"><view class='touchModal_end_text'>已结束</view></view>
   </view>
   <view class='localreflash' wx:if="{{canflash&&!isnationwideReflash&&nationwideactivityItem.length>0}}" bindtap='nationwideReflash'>点击加载更多</view>
   <view class='localreflash' wx:if="{{canflash&&isnationwideReflash}}"><image src='../../images/loading.gif' class='loading'></image></view>

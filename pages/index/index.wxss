@@ -299,7 +299,7 @@
 .modal-flex-2{
   flex: 0 0 60rpx;
   height: 84rpx;
-  line-height: 84rpx;
+  line-height: 70rpx;
   text-align: right;
 }
 .modal-store-item-1{
@@ -348,7 +348,7 @@
   width: 100%;
   height: 300rpx;
   z-index:2;
-  background-color: rgba(0,0,0,0.3);
+  background-color: rgba(0,0,0,0.5);
 }
 .touchModal_end_text{
   margin: auto;

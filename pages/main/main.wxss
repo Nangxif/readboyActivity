@@ -254,6 +254,7 @@ my-component,other-component{
   margin-top: 25rpx;
   margin-bottom: 25rpx;
   height: 88rpx; 
+  vertical-align: middle;
   line-height: 40rpx;
   color: #4c4c4c;
 }

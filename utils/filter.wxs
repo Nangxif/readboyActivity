@@ -5,13 +5,9 @@ var dateFormat = function (date) {
 }
 
 
-var acticityFilter = function(date){
-  return getDate() - getDate(date)
-}
 /*
  * 导出
  */
 module.exports = {
-  dateFormat: dateFormat,
-  acticityFilter: acticityFilter
+  dateFormat: dateFormat
 }

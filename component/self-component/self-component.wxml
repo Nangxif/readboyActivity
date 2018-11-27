@@ -19,21 +19,25 @@
       <view class='info'>已经砍下<view class='infoPirce'>{{originmuch}}</view>元，还差<view class='infoPirce'>{{prize_price-originmuch}}</view>元</view>
     </view>
   </view>
-  <view class='win' wx:if="{{isLogin&&isWin&&isconvert}}"><!--兑奖之后的界面-->
+  <view class='win' wx:if="{{isLogin&&isWin&&isconvert&&!isLastOne}}"><!--兑奖之后的界面-->
     <view class='win-title'>中奖啦</view>
-    <image src='../../images/pad.png' class='Winicon' wx:if="{{ranking<=10&&ranking>0}}"></image>
-    <image src='../../images/200.png' class='Winicons' wx:if="{{ranking>10}}"></image>
+    <image src='{{prize_setting[prize_level].pic_link}}' class='Winicon'></image>
     <view class='win-content'>恭喜您获得{{prize_setting[prize_level].name}}</view>
   </view>
-  <view class='selfinfos' wx:if="{{isLogin&&isWin&&noconvert}}"><!--获奖但是还没兑奖的界面-->
+  <view class='selfinfos' wx:if="{{isLogin&&isWin&&noconvert&&!isLastOne}}"><!--获奖但是还没兑奖的界面-->
     <view class='wininfo'>恭喜你，获得{{prize_setting[prize_level].name}}</view>
   </view>
+  <view class='selfinfos' wx:if="{{isLogin&&isWin&&noconvert&&isLastOne}}"><!--获奖但是还没兑奖的界面-->
+    <view class='wininfo'>很遗憾，获奖名额已满，砍价结束</view>
+  </view>
+
+
 
   <view class='btns' wx:if="{{isLogin&&!isWin}}"><!--已登录时按钮-->
     <button class='{{isCut<=0?"btns_1 btns-begin-primary":"btns_1 btns-begin"}}' bindtap='cut'>{{isCut<=0?"机会已用完，明天再来吧":"开始砍价×"+isCut}}</button>
     <button class='btns_2 btns-begin' open-type="share">邀请好友砍价</button>
   </view>
-  <view class='btns' wx:if="{{isLogin&&isWin&&noconvert}}"><!--已登录时兑换奖品按钮-->
+  <view class='btns' wx:if="{{isLogin&&isWin&&noconvert&&!isLastOne}}"><!--已登录时兑换奖品按钮-->
     <button class='btns_1 btns-begin' bindtap='saveModal'>兑奖</button>
   </view>
   <view class='btns' wx:if="{{!isLogin}}"><!--未登录时按钮-->
@@ -98,9 +102,12 @@
   </cover-view>
 
 
+  
+
+
   <!-- 兑奖弹框 -->
 <view class='WinModal' wx:if="{{modal[2]}}">
-  <view class='WinModalContentpad win-bg' wx:if="{{prize_level==0}}"><!--当排名为前10时-->
+  <view class='WinModalContentpad win-bg'><!--当排名为前10时-->
     <view class='WinpadModalCloseview' bindtap='closeModal' data-out='2'>
       <image class='WinpadModalClose' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAdCAMAAABhTZc9AAAAOVBMVEUAAAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VAD/VACj17o6AAAAEnRSTlMA6i4B3Zh6HfWwpYXzcUFALQZdzogUAAAAeUlEQVQoz23PSwqEQBRD0VRVa2vbP9/+FyuIeAdJpgcCV/vausLGtPyktepkw6rlq0ddbFg16wk7Cg4IZ4QdnUFn0DkiDCZ+gYFBZ9A3ztt3NyCF7oANdpzv7oQSHBCOCDs6g4lBZzAymLiBxpv+7ULnaUj9I0Xehg6rUA9sSOntiwAAAABJRU5ErkJggg=='></image>
     </view>
@@ -128,9 +135,27 @@
         <input type="number" maxlength="12" id='tel' class='Winpad-input_2' placeholder='座机需填区号' name="tel"/>
       </view>      
       <view class='Winpad-input'>
-        <view class='Winpad-input-foot'>请在活动有效期内到相应活动门店兑换礼品，请在活动有效期内到相应活动门店兑奖礼品。建议截图作为兑奖凭证。</view>
+        <view class='Winpad-input-foot'>请在活动有效期内到相应活动门店兑奖礼品。建议截图作为兑奖凭证。</view>
       </view>
       <button class='Winpad-bottom-btn' data-out='4' form-type='submit'>保存</button>
     </form>
   </view>
 </view>
+
+
+<cover-view class='CutModal' style='{{modal[3]?"display:block;":"display:none;"}}'>
+    <cover-image src='../../images/00.png' class='selfmodalbg'></cover-image>
+    <cover-view class='CutModalContent'>
+      <cover-view class='CutModalCloseview' bindtap='closeModal' data-out='3'>
+        <cover-image class='CutModalClose' src='../../images/close.png'></cover-image>
+      </cover-view>
+      <cover-view class='CutModalTitle'>
+        <cover-image src='../../images/wholeft.png' class='cutleft'></cover-image>
+        很遗憾
+        <cover-image src='../../images/whoright.png' class='cutright'></cover-image>
+      </cover-view>
+      <cover-view class='CutModalBody'>
+        <cover-view class='CutModalText'>很遗憾，获奖名额已满</cover-view>
+      </cover-view>
+    </cover-view>
+  </cover-view>

@@ -51,24 +51,74 @@ Page({
     request.win_list(app.globalData.activity_id||that.data.activity_id,function (res) {
       if(res.code==1){
         that.setData({
-          isStart: true,
-          isEnd: false,
           obj: res.prizes,
-          prize: res.winners,//res.winners
+          // prize: res.winners,//res.winners
         }, function () {
           //跑马灯文字的总长度
-          var str = [("已有" + wx.getStorageSync('activity_id_and_num').split("-")[1] + "人参与活动。\t")], prizeitem = [];
-          var lenG = this.data.prize.length <= that.data.obj[0].amount ? this.data.prize.length : that.data.obj[0].amount, pz = that.data.obj[0].name;
+          if (wx.getStorageSync('activity_id_and_num').split("-")[1]){
+            var str = [("已有" + wx.getStorageSync('activity_id_and_num').split("-")[1] + "人参与活动。\t")];
+          }else{
+            var str = [];
+          }
+          
+          var lenG = res.winners.length <= that.data.obj[0].amount ? res.winners.length : that.data.obj[0].amount, pz = that.data.obj[0].name;
           for (var len = 0; len < lenG; len++) {
-            str.push("恭喜" + that.data.prize[len].nickname + "完成砍价，领走" + pz + "。\t");
-            prizeitem.push(pz);
+            str.push("恭喜" + res.winners[len].nickname + "完成砍价，领走" + pz + "。\t");
           }
 
 
+          var winArr = res.winners;
+          var lenP = res.prizes.length;
+          var po = 0;
 
+          var lenW = res.winners.length;
+          var level = [res.prizes[0].amount];
+          if (lenP>1){
+            for (var n = 1; n < lenP; n++) {
+              level.push(res.prizes[n - 1].amount + res.prizes[n].amount);
+            }
+          }
+
+          if (wx.getStorageSync('activity_id_and_num')&&wx.getStorageSync('activity_id_and_num').split("-")[2] == 1){
+            that.setData({
+              isStart: false,
+              isEnd: true,
+            })
+          } else if (wx.getStorageSync('activity_id_and_num') && wx.getStorageSync('activity_id_and_num').split("-")[2] == 2){
+            that.setData({
+              isStart: true,
+              isEnd: false,
+            })
+          }else{
+            if (lenW > level[level.length - 1]){
+              that.setData({
+                isStart: false,
+                isEnd: true,
+              })
+            }else{
+              that.setData({
+                isStart: true,
+                isEnd: false,
+              })
+            }
+          }
+          for (var j = 0; j < lenW; j++) {
+            if (j < level[level.length-1]){
+              for (var i = 0; i < lenP; i++) {
+                if (j < level[i]) {
+                  winArr[j].prize = res.prizes[i].name;
+                } else {
+                  winArr[j].prize = res.prizes[i + 1].name || "奖品名额已满";
+                }
+                break;
+              }
+            }else{
+              winArr[j].prize = "奖品名额已满";
+            }
+          }
           that.setData({
             text: str,
-            prizeitem: prizeitem
+            prize: winArr
           });
           var s = str.join("");
           that.setData({
@@ -76,21 +126,6 @@ Page({
             "marquee.width": marquee.getWidth(s) * 27,
             "marquee.time": marquee.getWidth(s) / 2
           })
-        })
-        request.activity_share(wx.getStorageSync('activity_id_and_num').split("-")[0], function (share) {
-          if (share.code == 1) {
-            that.setData({
-              share_title: share.data.share_title,
-              share_cover: share.data.share_cover,
-              isEnd: false,
-              isStart:true
-            })
-          } else if (share.code == -2) {
-            that.setData({
-              isStart:false,
-              isEnd: true
-            })
-          }
         })
       } else if (res.code == -2){
         that.setData({
@@ -163,6 +198,18 @@ Page({
     if (e.detail.isfix != undefined){
       this.setData({
         isfix: e.detail.isfix
+      })
+    }
+    if (e.detail.isStart != undefined) {
+      this.setData({
+        isStart: e.detail.isStart,
+        isEnd: e.detail.isEnd
+      })
+    }
+    if (e.detail.share_title != undefined){
+      this.setData({
+        share_title: e.detail.share_title,
+        share_cover: e.detail.share_cover
       })
     }
   },
