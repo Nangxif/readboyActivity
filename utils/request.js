@@ -251,22 +251,27 @@ function win_list(activity_id, callback) {
 
 function winners(activity_id, callback) {
   // 使用缓存
-  // var cache = wx.getStorageSync('winners_cache');
-  // if (cache && cache.Date.now() < cache_time + 1000000) {
-  //   return new Promise((a, b) => {
-  //     typeof (callback) === 'function' && callback(cache)
-  //     a(cache);
-  //   })
-  // }
+  var cache = wx.getStorageSync('winners_cache')||{};
+  if(cache[activity_id]){
+    if (Date.now() < cache[activity_id].timestamp + 1000000) {
+      return new Promise((a, b) => {
+        typeof (callback) === 'function' && callback(cache[activity_id])
+        a(cache[activity_id]);
+      })
+    }
+  }
+  
+
   var postData = {}
   postData.activity_id = activity_id;
   return postPromise('api/winners', makeSn(postData), res => {
     typeof (callback) === 'function' && callback(res);
     if (res.code == 1) {
-      res.timestamp = Date.now()
+      res.timestamp = Date.now();
+      cache[activity_id] = res;
       wx.setStorage({
         key: 'winners_cache',
-        data: res,
+        data: cache,
       })
     }
   });
