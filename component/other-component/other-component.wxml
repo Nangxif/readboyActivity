@@ -59,41 +59,41 @@
 </view>
 
  <!--砍价弹框  -->
-  <cover-view class='CutModal' style='{{modal[1]?"display:block;":"display:none;"}}'>
-    <cover-image src='../../images/00.png' class='othermodalbg'></cover-image>
-    <cover-view class='CutModalContent'>
-      <cover-view class='CutModalCloseview' bindtap='closeModal' data-out='1'>
-        <cover-image class='CutModalClose' src='../../images/close.png'></cover-image>
-      </cover-view>
-      <cover-view class='CutModalTitle'>
-        <cover-image src='../../images/wholeft.png' class='cutleft'></cover-image>
+  <view class='CutModal' style='{{modal[1]?"display:block;":"display:none;"}}'>
+    <image src='../../images/00.png' class='othermodalbg'></image>
+    <view class='CutModalContent'>
+      <view class='CutModalCloseview' bindtap='closeModal' data-out='1'>
+        <image class='CutModalClose' src='../../images/close.png'></image>
+      </view>
+      <view class='CutModalTitle'>
+        <image src='../../images/wholeft.png' class='cutleft'></image>
         恭喜你
-        <cover-image src='../../images/whoright.png' class='cutright'></cover-image>
-      </cover-view>
-      <cover-view class='CutModalBody'>
-        <cover-view class='CutModalText'><cover-view style='display:inline-block;'>成功砍下</cover-view><cover-view style='color:#ff5c00;display:inline-block;width:122rpx;text-align:center;'>{{howmuch}}</cover-view><cover-view style='display:inline-block;'>元</cover-view></cover-view>
-      </cover-view>
-    </cover-view>
-  </cover-view>
+        <image src='../../images/whoright.png' class='cutright'></image>
+      </view>
+      <view class='CutModalBody'>
+        <view class='CutModalText'>成功砍下<view style='color:#ff5c00;display:inline-block;'>{{howmuch}}</view>元</view>
+      </view>
+    </view>
+  </view>
 
 
 
-  <cover-view class='CutModal' style='{{modal[2]?"display:block;":"display:none;"}}'>
-    <cover-image src='../../images/00.png' class='othermodalbg'></cover-image>
-    <cover-view class='CutModalContent'>
-      <cover-view class='CutModalCloseview' bindtap='closeModal' data-out='2'>
-        <cover-image class='CutModalClose' src='../../images/close.png'></cover-image>
-      </cover-view>
-      <cover-view class='CutModalTitle'>
-        <cover-image src='../../images/wholeft.png' class='cutleft'></cover-image>
+  <view class='CutModal' style='{{modal[2]?"display:block;":"display:none;"}}'>
+    <image src='../../images/00.png' class='othermodalbg'></image>
+    <view class='CutModalContent'>
+      <view class='CutModalCloseview' bindtap='closeModal' data-out='2'>
+        <image class='CutModalClose' src='../../images/close.png'></image>
+      </view>
+      <view class='CutModalTitle'>
+        <image src='../../images/wholeft.png' class='cutleft'></image>
         很遗憾
-        <cover-image src='../../images/whoright.png' class='cutright'></cover-image>
-      </cover-view>
-      <cover-view class='CutModalBody'>
-        <cover-view class='CutModalText'>很遗憾，获奖名额已满</cover-view>
-      </cover-view>
-    </cover-view>
-  </cover-view>
+        <image src='../../images/whoright.png' class='cutright'></image>
+      </view>
+      <view class='CutModalBody'>
+        <view class='CutModalText'>很遗憾，获奖名额已满</view>
+      </view>
+    </view>
+  </view>
 
 
 

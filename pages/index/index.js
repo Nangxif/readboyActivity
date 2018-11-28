@@ -26,15 +26,19 @@ Page({
     page:1,//全国门店当前页数
     isAuthorization:false,//是否授权
   },
-  onLoad: function () {
-    // address.authorization()
+  onLoad: function () {//页面卸载的时候清除picker缓存
+    wx.removeStorageSync("picker");
+    this.setData({
+      page:1
+    })
   },
   onShow: function () { 
-  },
-  onReady: function () {
     var that = this;
+    this.setData({
+      page: 1
+    })
     wx.getLocation({//调出授权窗口
-      type: 'wgs84', 
+      type: 'wgs84',
       success: function (res) {
         that.setData({
           latitude: res.latitude,//纬度
@@ -46,18 +50,33 @@ Page({
         })
         that.data.myAmapFun.getRegeo({//获取当前位置的名称等信息
           success: function (data) {
-            that.setData({
-              region: [data[0].regeocodeData.addressComponent.province, data[0].regeocodeData.addressComponent.city, data[0].regeocodeData.addressComponent.township],
-              citycode: data[0].regeocodeData.addressComponent.adcode
-            })
-            request.index(that.data.longitude, that.data.latitude, data[0].regeocodeData.addressComponent.adcode,function(inde){
-              if (inde.code==1){
-                that.setData({
-                  activityItem:inde.data
-                })
-              }
-            })
-            request.activities(that.data.page, that.data.longitude, that.data.latitude, data[0].regeocodeData.addressComponent.adcode,function (nation) {
+            // wx.setStorageSync("pickercode", e.detail.code)
+            if(wx.getStorageSync("picker")){
+              that.setData({
+                region: wx.getStorageSync("picker").value,
+                citycode: data[0].regeocodeData.addressComponent.adcode
+              })
+              request.activity_search(that.data.longitude, that.data.latitude, wx.getStorageSync("picker").code[1], function (searc) {
+                if (searc.code == 1) {
+                  that.setData({
+                    activityItem: searc.data
+                  })
+                }
+              })
+            }else{
+              that.setData({
+                region: [data[0].regeocodeData.addressComponent.province, data[0].regeocodeData.addressComponent.city, data[0].regeocodeData.addressComponent.township],
+                citycode: data[0].regeocodeData.addressComponent.adcode
+              })
+              request.index(that.data.longitude, that.data.latitude, data[0].regeocodeData.addressComponent.adcode, function (inde) {
+                if (inde.code == 1) {
+                  that.setData({
+                    activityItem: inde.data
+                  })
+                }
+              })
+            }
+            request.activities(that.data.page, that.data.longitude, that.data.latitude, data[0].regeocodeData.addressComponent.adcode, function (nation) {
               if (nation.code === 1) {
                 if (nation.data.length != 0) {
                   that.setData({
@@ -77,9 +96,9 @@ Page({
           }
         })
       },
-      fail:function(err){
+      fail: function (err) {
         address.authorization(function (res) {
-          if(res.code==1){
+          if (res.code == 1) {
             wx.redirectTo({
               url: "../index/index"
             })
@@ -87,8 +106,8 @@ Page({
         });
       }
     })
-
-    
+  },
+  onReady: function () { 
   },
   onPageScroll:function(e){
     if(e.scrollTop<0){
@@ -104,7 +123,7 @@ Page({
   },
   bindRegionChange: function (e) {
     var that = this;
-    console.log('picker发送选择改变，携带值为', e.detail.code)
+    console.log('picker发送选择改变，携带值为', e.detail)
     this.setData({
       region: e.detail.value
     })
@@ -114,7 +133,8 @@ Page({
           url: "../index/index"
         })
       }else{
-        request.activity_search(that.data.longitude, that.data.latitude, e.detail.code[1], function (searc) {
+        wx.setStorageSync("picker", e.detail);
+        request.activity_search(that.data.longitude, that.data.latitude, e.detail.code[1], function (searc) {         
           if (searc.code == 1) {
             that.setData({
               activityItem: searc.data

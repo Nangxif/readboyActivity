@@ -67,15 +67,29 @@ Component({
             })
           }
           if (wx.getStorageSync('activity_id_and_num').split("-")[2] == 2) {//活动提前结束
-              if (!res.prize_setting[level]){//如果排名超过奖品数量
+              // if (!res.prize_setting[level]){//如果排名超过奖品数量
+              //   that.triggerEvent('myevent', { isStart: false, isEnd: true });
+              // }else{
+              //   if (res.prize_received) {
+              //     that.triggerEvent('myevent', { isStart: false, isEnd: true });
+              //   } else {
+              //     that.triggerEvent('myevent', { isStart: true, isEnd: false });
+              //   }
+              // }
+            if (res.position == 0) {
+              that.triggerEvent('myevent', { isStart: false, isEnd: true });
+            } else {
+              if (!res.prize_setting[level]) {//如果排名超过奖品数量
                 that.triggerEvent('myevent', { isStart: false, isEnd: true });
-              }else{
+              } else {
                 if (res.prize_received) {
                   that.triggerEvent('myevent', { isStart: false, isEnd: true });
                 } else {
                   that.triggerEvent('myevent', { isStart: true, isEnd: false });
                 }
               }
+            }
+
           } else {//活动还没结束
             request.activity_share(wx.getStorageSync('activity_id_and_num').split("-")[0], function (share) {
               if (share.code == 1) {

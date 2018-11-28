@@ -90,7 +90,7 @@ Page({
               isEnd: false,
             })
           }else{
-            if (lenW > level[level.length - 1]){
+            if (lenW >= level[level.length - 1]){
               that.setData({
                 isStart: false,
                 isEnd: true,
