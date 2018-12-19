@@ -20,6 +20,7 @@ Component({
   ready:function(){
     var that=this;
     request.winners(app.globalData.activity_id || wx.getStorageSync('activity_id_and_num').split("-")[0],function(res){
+      wx.removeStorageSync("activity_id_and_num");
       if(res.code==1){
         var winArr = res.winners;//获奖名单数组
         var lenP = res.prizes.length;

@@ -33,11 +33,11 @@
     <button class='btns_1 btns-begin-primary' bindtap='cut' wx:if="{{isCut==-3}}">今天已不能帮忙砍价，明天再来吧</button>
     <button class='btns_1 btns-begin-primary' bindtap='cut' wx:if="{{isCut==-1}}">助力已满三次，明天再来吧</button>
     <button class='btns_1 btns-begin-primary' bindtap='cut' wx:if="{{isCut==-2}}">对方已没有砍价机会，明天再来吧</button>
-    <button class='btns_2 btns-begin' bindtap='wanttijoin'>我也要砍价领学生平板</button>
+    <button class='btns_2 btns-begin' bindtap='wanttijoin'>我也要参加活动</button>
   </view>
   <view class='btns' wx:if="{{!isLogin}}"><!--未登录时按钮-->
     <button class='{{isCut<=0?"btns_1 btns-begin-primary":"btns_1 btns-begin"}}' open-type='getUserInfo' bindgetuserinfo="bindGetUserInfo" data-index='0'>{{isCut<=0?"帮过一次啦，明天再来吧":"帮好友砍价"}}</button>
-    <button class='btns_2 btns-other' open-type='getUserInfo' bindgetuserinfo="bindGetUserInfo" data-index='1'>我也要砍价领学生平板</button>
+    <button class='btns_2 btns-other' open-type='getUserInfo' bindgetuserinfo="bindGetUserInfo" data-index='1'>我也要参加活动</button>
   </view>
 
 

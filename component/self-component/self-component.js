@@ -1,4 +1,5 @@
 // component/self-component/self-component.js
+const app = getApp();
 var request=require("../../utils/request.js");
 Component({
   /**
@@ -43,7 +44,7 @@ Component({
     var that = this;
     //此处调用接口初始化数据
     that.setData({
-      activity_id: wx.getStorageSync('activity_id_and_num').split("-")[0]
+      activity_id: app.globalData.activity_id||wx.getStorageSync('activity_id_and_num').split("-")[0]
     })
     if (wx.getStorageSync('userInfo').nickName) {
       request.player(that.data.activity_id, function(res){
@@ -76,6 +77,7 @@ Component({
               //     that.triggerEvent('myevent', { isStart: true, isEnd: false });
               //   }
               // }
+            wx.removeStorageSync("activity_id_and_num");
             if (res.position == 0) {
               that.triggerEvent('myevent', { isStart: false, isEnd: true });
             } else {
@@ -91,11 +93,12 @@ Component({
             }
 
           } else {//活动还没结束
-            request.activity_share(wx.getStorageSync('activity_id_and_num').split("-")[0], function (share) {
+            request.activity_share(that.data.activity_id, function (share) {
               if (share.code == 1) {
                 that.triggerEvent('myevent', { share_title: share.data.share_title, share_cover: share.data.share_cover, });
               }
             })
+            wx.removeStorageSync("activity_id_and_num");
           }
 
 

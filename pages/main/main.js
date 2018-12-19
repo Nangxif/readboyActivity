@@ -46,7 +46,7 @@ Page({
     var that = this;
     // if (!app.globalData.isEnd) {
     that.setData({
-      activity_id: wx.getStorageSync('activity_id_and_num').split("-")[0]
+      activity_id: app.globalData.activity_id||wx.getStorageSync('activity_id_and_num').split("-")[0]
     })
     request.win_list(app.globalData.activity_id||that.data.activity_id,function (res) {
       if(res.code==1){
@@ -148,7 +148,7 @@ Page({
     var that = this;
     var openid = wx.getStorageSync('openid'),
       userInfo = wx.getStorageSync('userInfo'),
-      activity_id = wx.getStorageSync('activity_id_and_num').split("-")[0]
+      activity_id = this.data.activity_id;
     if (openid) {
       app.globalData.onShare = true;
       return {
